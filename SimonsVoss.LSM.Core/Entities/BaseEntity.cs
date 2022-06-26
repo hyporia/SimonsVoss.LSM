@@ -1,6 +1,8 @@
 namespace SimonsVoss.LSM.Core.Entities;
 
-public class BaseEntity
+public abstract class BaseEntity
 {
     public Guid Id { get; set; }
+
+    public string? Description { get; set; }
 }
