@@ -2,6 +2,10 @@ namespace SimonsVoss.LSM.Core.Requests.GetLocks;
 
 public class GetLocksQueryResponseItem
 {
+    public Guid Id { get; set; }
+
+    public string? Description { get; set; }
+    
     public Guid BuildingId { get; set; }
 
     public string Type { get; set; } = null!;

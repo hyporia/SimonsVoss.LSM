@@ -1,7 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SimonsVoss.LSM.Core.Requests.GetLocks;
-using SimonsVoss.LSM.DB;
 
 namespace SimonsVoss.LSM.Web.Controllers;
 

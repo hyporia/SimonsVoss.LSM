@@ -1,9 +1,6 @@
 using System.Reflection;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SimonsVoss.LSM.Core;
 using SimonsVoss.LSM.Core.Entities;
 using SimonsVoss.LSM.Core.Entities.Dictionaries;
 
@@ -22,6 +19,8 @@ public class EfContext : DbContext
     public DbSet<Lock> Locks { get; set; }
     public DbSet<Group> Groups { get; set; }
     public DbSet<Medium> Media { get; set; }
+    public DbSet<LockType> LockTypes { get; set; }
+    public DbSet<MediumType> MediumTypes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

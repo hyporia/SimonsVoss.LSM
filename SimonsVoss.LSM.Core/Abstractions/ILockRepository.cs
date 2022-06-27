@@ -1,4 +1,3 @@
-using SimonsVoss.LSM.Core.Entities;
 using SimonsVoss.LSM.Core.Requests.GetLocks;
 
 namespace SimonsVoss.LSM.Core.Abstractions;
