@@ -2,7 +2,7 @@ using SimonsVoss.LSM.Core.Enums;
 
 namespace SimonsVoss.LSM.Core.Entities;
 
-public class Medium
+public class Medium : BaseEntity
 {
     public Guid GroupId { get; set; }
 
