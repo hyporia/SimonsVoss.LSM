@@ -12,14 +12,18 @@ public class MediumConfiguration : BaseEntityConfiguration<Medium>
 
         builder.Property(x => x.Owner);
         
-        builder.Property(x => x.Type);
-        
         builder.Property(x => x.SerialNumber);
 
         builder.HasOne(x => x.Group)
             .WithMany(x => x.Media)
             .HasPrincipalKey(x => x.Id)
             .HasForeignKey(x => x.GroupId)
+            .OnDelete(DeleteBehavior.Restrict);
+        
+        builder.HasOne(x => x.MediumType)
+            .WithMany(x => x.Media)
+            .HasPrincipalKey(x => x.Id)
+            .HasForeignKey(x => x.MediumTypeId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SimonsVoss.LSM.DB;
@@ -11,9 +12,10 @@ using SimonsVoss.LSM.DB;
 namespace SimonsVoss.LSM.DB.Migrations
 {
     [DbContext(typeof(EfContext))]
-    partial class AppContextModelSnapshot : ModelSnapshot
+    [Migration("20220627162350_seed_data")]
+    partial class seed_data
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,6 +78,75 @@ namespace SimonsVoss.LSM.DB.Migrations
                             Description = "Logistikzentrum, 81335 München",
                             Name = "Logistikzentrum II",
                             ShortCut = "LOG-2"
+                        });
+                });
+
+            modelBuilder.Entity("SimonsVoss.LSM.Core.Entities.Dictionaries.LockType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("value");
+
+                    b.HasKey("Id")
+                        .HasName("pk_lock_type");
+
+                    b.ToTable("lock_type", "public");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Value = "Cylinder"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Value = "SmartHandle"
+                        });
+                });
+
+            modelBuilder.Entity("SimonsVoss.LSM.Core.Entities.Dictionaries.MediumType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("value");
+
+                    b.HasKey("Id")
+                        .HasName("pk_medium_type");
+
+                    b.ToTable("medium_type", "public");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Value = "Card"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Value = "Transponder"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Value = "TransponderWithCardInlay"
                         });
                 });
 
@@ -190,6 +261,10 @@ namespace SimonsVoss.LSM.DB.Migrations
                         .HasColumnType("text")
                         .HasColumnName("floor");
 
+                    b.Property<int>("LockTypeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("lock_type_id");
+
                     b.Property<string>("Name")
                         .HasColumnType("text")
                         .HasColumnName("name");
@@ -202,15 +277,14 @@ namespace SimonsVoss.LSM.DB.Migrations
                         .HasColumnType("text")
                         .HasColumnName("serial_number");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer")
-                        .HasColumnName("type");
-
                     b.HasKey("Id")
                         .HasName("pk_locks");
 
                     b.HasIndex("BuildingId")
                         .HasDatabaseName("ix_locks_building_id");
+
+                    b.HasIndex("LockTypeId")
+                        .HasDatabaseName("ix_locks_lock_type_id");
 
                     b.ToTable("locks", "public");
 
@@ -220,478 +294,478 @@ namespace SimonsVoss.LSM.DB.Migrations
                             Id = new Guid("0a1e6f38-6076-4da8-8d6c-87356f975baf"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "4.OG",
+                            LockTypeId = 1,
                             Name = "Gästezimmer 4.OG",
                             RoomNumber = "454",
-                            SerialNumber = "UID-A89F98F3",
-                            Type = 1
+                            SerialNumber = "UID-A89F98F3"
                         },
                         new
                         {
                             Id = new Guid("e657a28e-d744-4f62-b5d8-a64123c2400f"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "WC Herren 3.OG süd",
                             RoomNumber = "WC.HL",
-                            SerialNumber = "UID-C043133A",
-                            Type = 1
+                            SerialNumber = "UID-C043133A"
                         },
                         new
                         {
                             Id = new Guid("be3d6d9e-3e30-4294-af60-bf24afacbefe"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "WC Damen 3.OG süd",
                             RoomNumber = "WC.DL",
-                            SerialNumber = "UID-F40C9966",
-                            Type = 1
+                            SerialNumber = "UID-F40C9966"
                         },
                         new
                         {
                             Id = new Guid("75696d97-2323-4647-b3a0-d59907273467"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "WC Herren 3.OG west",
                             RoomNumber = "WC.HR",
-                            SerialNumber = "UID-82CE310A",
-                            Type = 1
+                            SerialNumber = "UID-82CE310A"
                         },
                         new
                         {
                             Id = new Guid("12fb5bd1-4f9a-44fc-a9ec-a1b3649e81ec"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "WC Damen 3.OG west",
                             RoomNumber = "WC.DR",
-                            SerialNumber = "UID-B681BB56",
-                            Type = 1
+                            SerialNumber = "UID-B681BB56"
                         },
                         new
                         {
                             Id = new Guid("060da4ab-dd20-4539-ac2e-8c47fd0bca50"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "EG",
+                            LockTypeId = 1,
                             Name = "Schulungsraum",
                             RoomNumber = "S01",
-                            SerialNumber = "UID-5DE29561",
-                            Type = 1
+                            SerialNumber = "UID-5DE29561"
                         },
                         new
                         {
                             Id = new Guid("14cfce07-160c-4454-83c2-c7ba29f51796"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "1.OG",
+                            LockTypeId = 1,
                             Name = "Besprechungsraum 1.OG",
                             RoomNumber = "117",
-                            SerialNumber = "UID-9590FAD2",
-                            Type = 1
+                            SerialNumber = "UID-9590FAD2"
                         },
                         new
                         {
                             Id = new Guid("40c8a9ef-e533-470e-b127-4f09b791cb88"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "Besprechungsraum 3.OG",
                             RoomNumber = "332",
-                            SerialNumber = "UID-F5CC4F99",
-                            Type = 1
+                            SerialNumber = "UID-F5CC4F99"
                         },
                         new
                         {
                             Id = new Guid("2f4632c2-c980-47c4-9c86-226e4493aba5"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "4.OG",
+                            LockTypeId = 1,
                             Name = "Besprechungsraum 4.OG klein",
                             RoomNumber = "402",
-                            SerialNumber = "UID-234FFA7D",
-                            Type = 1
+                            SerialNumber = "UID-234FFA7D"
                         },
                         new
                         {
                             Id = new Guid("0c3d0cd4-a24e-45e9-85dd-80ad7a91ba79"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "4.OG",
+                            LockTypeId = 1,
                             Name = "Besprechungsraum 4.OG groß",
                             RoomNumber = "408",
-                            SerialNumber = "UID-41302C30",
-                            Type = 1
+                            SerialNumber = "UID-41302C30"
                         },
                         new
                         {
                             Id = new Guid("b386ba3d-aac7-410a-9fa5-9a2b3a989527"),
                             BuildingId = new Guid("9605186f-7eb4-4f40-967e-2885d9a8b3c4"),
+                            LockTypeId = 1,
                             Name = "Besprechungsraum Osterfeld klein",
                             RoomNumber = "B.01",
-                            SerialNumber = "UID-43C3F2C8",
-                            Type = 1
+                            SerialNumber = "UID-43C3F2C8"
                         },
                         new
                         {
                             Id = new Guid("d4f144db-cdb8-4b85-ae9c-e4603aa6482e"),
                             BuildingId = new Guid("9605186f-7eb4-4f40-967e-2885d9a8b3c4"),
+                            LockTypeId = 1,
                             Name = "Besprechungsraum Osterfeld groß",
                             RoomNumber = "B.02",
-                            SerialNumber = "UID-21BC2485",
-                            Type = 1
+                            SerialNumber = "UID-21BC2485"
                         },
                         new
                         {
                             Id = new Guid("76c06d7e-b2c6-4480-8d26-6e169fb71ee7"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 2,
                             Name = "Werkstatt 1",
                             RoomNumber = "460",
-                            SerialNumber = "UID-049E18CE",
-                            Type = 2
+                            SerialNumber = "UID-049E18CE"
                         },
                         new
                         {
                             Id = new Guid("20f8de01-f753-4309-b468-4c33333efd7b"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 2,
                             Name = "Werkstatt 2",
                             RoomNumber = "465",
-                            SerialNumber = "UID-B9547400",
-                            Type = 2
+                            SerialNumber = "UID-B9547400"
                         },
                         new
                         {
                             Id = new Guid("4f055142-fdaa-4dde-866a-ef72311ba52f"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 2,
                             Name = "Werkstatt 3",
                             RoomNumber = "468",
-                            SerialNumber = "UID-64C2AD85",
-                            Type = 2
+                            SerialNumber = "UID-64C2AD85"
                         },
                         new
                         {
                             Id = new Guid("e4130030-aa93-4847-b0ff-81a86fac3de8"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "Flatley/Parker",
                             RoomNumber = "320",
-                            SerialNumber = "UID-27BF2D3B",
-                            Type = 1
+                            SerialNumber = "UID-27BF2D3B"
                         },
                         new
                         {
                             Id = new Guid("22270680-ce59-4e52-bb0d-f2e43ba20952"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "Lang/Denesik",
                             RoomNumber = "321",
-                            SerialNumber = "UID-EBD15B0B",
-                            Type = 1
+                            SerialNumber = "UID-EBD15B0B"
                         },
                         new
                         {
                             Id = new Guid("11a3bc84-2db4-4a9f-a97b-b734eed94b98"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "Blick",
                             RoomNumber = "322",
-                            SerialNumber = "UID-0CA0DC80",
-                            Type = 1
+                            SerialNumber = "UID-0CA0DC80"
                         },
                         new
                         {
                             Id = new Guid("e04f23cd-bf5e-4a49-96ae-5c8b6b15fc94"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "Kertzmann",
                             RoomNumber = "323",
-                            SerialNumber = "UID-C05F8889",
-                            Type = 1
+                            SerialNumber = "UID-C05F8889"
                         },
                         new
                         {
                             Id = new Guid("fab80eca-b474-4b2e-b591-72f1dbbf9737"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "Kling/Hauck",
                             RoomNumber = "324",
-                            SerialNumber = "UID-F7F462B3",
-                            Type = 1
+                            SerialNumber = "UID-F7F462B3"
                         },
                         new
                         {
                             Id = new Guid("baef89d5-a427-4004-8286-6f048485c77d"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "Berge",
                             RoomNumber = "325",
-                            SerialNumber = "UID-58AFDCAB",
-                            Type = 1
+                            SerialNumber = "UID-58AFDCAB"
                         },
                         new
                         {
                             Id = new Guid("b8866ca5-7f5c-4565-8165-80682853b98f"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "Kerluke/Bradtke",
                             RoomNumber = "326",
-                            SerialNumber = "UID-CBDD200B",
-                            Type = 1
+                            SerialNumber = "UID-CBDD200B"
                         },
                         new
                         {
                             Id = new Guid("bbe275af-73f6-4357-8478-3b17d966e30d"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "Crona/Pacocha",
                             RoomNumber = "327",
-                            SerialNumber = "UID-06D6CE73",
-                            Type = 1
+                            SerialNumber = "UID-06D6CE73"
                         },
                         new
                         {
                             Id = new Guid("8dc4171b-706f-48d2-817b-4e2f3a40090c"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "Wisozk/Lang",
                             RoomNumber = "328",
-                            SerialNumber = "UID-2D103CA2",
-                            Type = 1
+                            SerialNumber = "UID-2D103CA2"
                         },
                         new
                         {
                             Id = new Guid("19bc0a7e-c8ec-4fb6-be47-194885de46a8"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "Purdy/Heller",
                             RoomNumber = "329",
-                            SerialNumber = "UID-BDEA281D",
-                            Type = 1
+                            SerialNumber = "UID-BDEA281D"
                         },
                         new
                         {
                             Id = new Guid("0b7c9077-f149-4b2d-aaa1-bba4b6fe7599"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "Bednar/Maggio/Morar",
                             RoomNumber = "339",
-                            SerialNumber = "UID-B4E3BF8F",
-                            Type = 1
+                            SerialNumber = "UID-B4E3BF8F"
                         },
                         new
                         {
                             Id = new Guid("a28a9ac9-7c40-4254-af06-fff3d4b39b10"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "4.OG",
+                            LockTypeId = 1,
                             Name = "McLaughlin",
                             RoomNumber = "436",
-                            SerialNumber = "UID-0F8AE86A",
-                            Type = 1
+                            SerialNumber = "UID-0F8AE86A"
                         },
                         new
                         {
                             Id = new Guid("ac052437-7009-484b-a206-1198b798212d"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "4.OG",
+                            LockTypeId = 1,
                             Name = "McKenzie/Steuber/Lang",
                             RoomNumber = "437",
-                            SerialNumber = "UID-E37B8571",
-                            Type = 1
+                            SerialNumber = "UID-E37B8571"
                         },
                         new
                         {
                             Id = new Guid("ea4c369b-38ec-4deb-ba65-bb9cdc756e83"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "4.OG",
+                            LockTypeId = 1,
                             Name = "Harris/Bechtelar",
                             RoomNumber = "438",
-                            SerialNumber = "UID-62C8D526",
-                            Type = 1
+                            SerialNumber = "UID-62C8D526"
                         },
                         new
                         {
                             Id = new Guid("6e2998a5-bab1-4692-b954-3aab4cc95d0c"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "4.OG",
+                            LockTypeId = 1,
                             Name = "Veum/Wilderman",
                             RoomNumber = "439",
-                            SerialNumber = "UID-7C487BC3",
-                            Type = 1
+                            SerialNumber = "UID-7C487BC3"
                         },
                         new
                         {
                             Id = new Guid("c1545d5b-46b3-4e3c-8a45-4cd077da7136"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "4.OG",
+                            LockTypeId = 1,
                             Name = "Leannon/Donnelly",
                             RoomNumber = "440",
-                            SerialNumber = "UID-B440946B",
-                            Type = 1
+                            SerialNumber = "UID-B440946B"
                         },
                         new
                         {
                             Id = new Guid("8ad642cb-ca75-42d8-89c6-622a4739b06e"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "4.OG",
+                            LockTypeId = 1,
                             Name = "Sipes/Fay",
                             RoomNumber = "441",
-                            SerialNumber = "UID-5F28F488",
-                            Type = 1
+                            SerialNumber = "UID-5F28F488"
                         },
                         new
                         {
                             Id = new Guid("767d6f18-7d58-4a5e-aad4-94ddf8f83f63"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "4.OG",
+                            LockTypeId = 1,
                             Name = "Turner/Welch",
                             RoomNumber = "442",
-                            SerialNumber = "UID-32E78952",
-                            Type = 1
+                            SerialNumber = "UID-32E78952"
                         },
                         new
                         {
                             Id = new Guid("df307bab-5362-4f2b-a7ac-14e9d577d348"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "4.OG",
+                            LockTypeId = 1,
                             Name = "Zieme",
                             RoomNumber = "443",
-                            SerialNumber = "UID-0DD11BFD",
-                            Type = 1
+                            SerialNumber = "UID-0DD11BFD"
                         },
                         new
                         {
                             Id = new Guid("ccf2aa27-187c-4b4b-92b9-251b96192713"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "4.OG",
+                            LockTypeId = 2,
                             Name = "Mohr",
                             RoomNumber = "428",
-                            SerialNumber = "UID-19EAB8A6",
-                            Type = 2
+                            SerialNumber = "UID-19EAB8A6"
                         },
                         new
                         {
                             Id = new Guid("f07f4996-b027-457d-9fe7-3dd0a2ee5ba2"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "4.OG",
+                            LockTypeId = 2,
                             Name = "McCullough/Tillman/Halvorson",
                             RoomNumber = "429",
-                            SerialNumber = "UID-B4D3673E",
-                            Type = 2
+                            SerialNumber = "UID-B4D3673E"
                         },
                         new
                         {
                             Id = new Guid("41c5952e-5812-44b8-87c2-cf120ea72cc0"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "4.OG",
+                            LockTypeId = 2,
                             Name = "Wilderman/Kohler/Hettinger",
                             RoomNumber = "430",
-                            SerialNumber = "UID-52427309",
-                            Type = 2
+                            SerialNumber = "UID-52427309"
                         },
                         new
                         {
                             Id = new Guid("2b9e8a1f-3bf8-433b-8344-3e059b052178"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "4.OG",
+                            LockTypeId = 2,
                             Name = "Gottlieb/Moen/Dach",
                             RoomNumber = "431",
-                            SerialNumber = "UID-46CCEB12",
-                            Type = 2
+                            SerialNumber = "UID-46CCEB12"
                         },
                         new
                         {
                             Id = new Guid("9c719fe0-a6b0-4e66-b8c0-613850125a88"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "4.OG",
+                            LockTypeId = 2,
                             Name = "Swift/Bednar/Cassin",
                             RoomNumber = "432",
-                            SerialNumber = "UID-8C16902B",
-                            Type = 2
+                            SerialNumber = "UID-8C16902B"
                         },
                         new
                         {
                             Id = new Guid("d1053e40-c2e8-4805-886c-56a1affe01cc"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "4.OG",
+                            LockTypeId = 2,
                             Name = "Schoen/Hermiston/Kuphal",
                             RoomNumber = "433",
-                            SerialNumber = "UID-CA37EE93",
-                            Type = 2
+                            SerialNumber = "UID-CA37EE93"
                         },
                         new
                         {
                             Id = new Guid("41eec2b2-506c-4078-be1a-808e11f9e05c"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "4.OG",
+                            LockTypeId = 2,
                             Name = "Harber/Lubowitz/Mueller",
                             RoomNumber = "434",
-                            SerialNumber = "UID-7495C44A",
-                            Type = 2
+                            SerialNumber = "UID-7495C44A"
                         },
                         new
                         {
                             Id = new Guid("9d644819-543b-4d78-8e63-5976514f0d15"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "Berge/Schoen",
                             RoomNumber = "340",
-                            SerialNumber = "UID-722217E0",
-                            Type = 1
+                            SerialNumber = "UID-722217E0"
                         },
                         new
                         {
                             Id = new Guid("9b663369-3840-402e-b18a-ccabf20d6f7d"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "Lemke",
                             RoomNumber = "341",
-                            SerialNumber = "UID-E7A26961",
-                            Type = 1
+                            SerialNumber = "UID-E7A26961"
                         },
                         new
                         {
                             Id = new Guid("bec4b51f-47e8-4105-9278-95bb1cf5ee63"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "Carroll/Ebert",
                             RoomNumber = "342",
-                            SerialNumber = "UID-E51A2150",
-                            Type = 1
+                            SerialNumber = "UID-E51A2150"
                         },
                         new
                         {
                             Id = new Guid("31a998da-f4a4-42fa-951c-9af6c29a1766"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "Ziemann/Nitzsche",
                             RoomNumber = "343",
-                            SerialNumber = "UID-FA22D6F8",
-                            Type = 1
+                            SerialNumber = "UID-FA22D6F8"
                         },
                         new
                         {
                             Id = new Guid("5f7d7f12-8fd7-4775-a76e-82c26f44582c"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "Harvey",
                             RoomNumber = "344",
-                            SerialNumber = "UID-453C0F28",
-                            Type = 1
+                            SerialNumber = "UID-453C0F28"
                         },
                         new
                         {
                             Id = new Guid("86dd6259-5330-4ba4-8d12-0f2b4d9bd3b0"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "Towne/Schmitt",
                             RoomNumber = "345",
-                            SerialNumber = "UID-7E0EF358",
-                            Type = 1
+                            SerialNumber = "UID-7E0EF358"
                         },
                         new
                         {
                             Id = new Guid("7d282924-932b-46e6-9023-b54f41bfb592"),
                             BuildingId = new Guid("0cccab2b-bc8d-44c5-b248-8a9ca6d7e899"),
                             Floor = "3.OG",
+                            LockTypeId = 1,
                             Name = "Lowe",
                             RoomNumber = "346",
-                            SerialNumber = "UID-2E1DB976",
-                            Type = 1
+                            SerialNumber = "UID-2E1DB976"
                         });
                 });
 
@@ -711,6 +785,10 @@ namespace SimonsVoss.LSM.DB.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("group_id");
 
+                    b.Property<int>("MediumTypeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("medium_type_id");
+
                     b.Property<string>("Owner")
                         .HasColumnType("text")
                         .HasColumnName("owner");
@@ -719,15 +797,14 @@ namespace SimonsVoss.LSM.DB.Migrations
                         .HasColumnType("text")
                         .HasColumnName("serial_number");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer")
-                        .HasColumnName("type");
-
                     b.HasKey("Id")
                         .HasName("pk_media");
 
                     b.HasIndex("GroupId")
                         .HasDatabaseName("ix_media_group_id");
+
+                    b.HasIndex("MediumTypeId")
+                        .HasDatabaseName("ix_media_medium_type_id");
 
                     b.ToTable("media", "public");
 
@@ -736,841 +813,841 @@ namespace SimonsVoss.LSM.DB.Migrations
                         {
                             Id = new Guid("2c2ec98f-137a-4c49-a47a-814ae18a3364"),
                             GroupId = new Guid("70c886f5-b74e-49f4-8d9f-cf2d6645d4d6"),
+                            MediumTypeId = 1,
                             Owner = "Gast 1",
-                            SerialNumber = "UID-378D17F6",
-                            Type = 1
+                            SerialNumber = "UID-378D17F6"
                         },
                         new
                         {
                             Id = new Guid("1a3648e2-1641-47f5-b9e3-dec74bb0fe56"),
                             GroupId = new Guid("70c886f5-b74e-49f4-8d9f-cf2d6645d4d6"),
+                            MediumTypeId = 1,
                             Owner = "Gast 2",
-                            SerialNumber = "UID-B1196558",
-                            Type = 1
+                            SerialNumber = "UID-B1196558"
                         },
                         new
                         {
                             Id = new Guid("c09ebd30-d695-4053-9f9c-177a692f40e2"),
                             GroupId = new Guid("70c886f5-b74e-49f4-8d9f-cf2d6645d4d6"),
+                            MediumTypeId = 1,
                             Owner = "Gast 3",
-                            SerialNumber = "UID-7A45B6FD",
-                            Type = 1
+                            SerialNumber = "UID-7A45B6FD"
                         },
                         new
                         {
                             Id = new Guid("0e3a1cb3-a0ea-4e51-bda5-95637c854a1d"),
                             GroupId = new Guid("abf2f0f5-ca6c-47c6-a018-dffd3e59d3ea"),
+                            MediumTypeId = 3,
                             Owner = "Mrs. Quinton Stanton",
-                            SerialNumber = "UID-B28837DB",
-                            Type = 2
+                            SerialNumber = "UID-B28837DB"
                         },
                         new
                         {
                             Id = new Guid("6b14e836-86fe-4e3e-858d-c1690d6146c4"),
                             GroupId = new Guid("abf2f0f5-ca6c-47c6-a018-dffd3e59d3ea"),
+                            MediumTypeId = 3,
                             Owner = "Modesto Bradtke",
-                            SerialNumber = "UID-ADB2C586",
-                            Type = 2
+                            SerialNumber = "UID-ADB2C586"
                         },
                         new
                         {
                             Id = new Guid("1fc0aa9c-fa20-4576-92c8-77b28c0be3ac"),
                             GroupId = new Guid("abf2f0f5-ca6c-47c6-a018-dffd3e59d3ea"),
+                            MediumTypeId = 3,
                             Owner = "Shirley Walter",
-                            SerialNumber = "UID-45DF73F0",
-                            Type = 2
+                            SerialNumber = "UID-45DF73F0"
                         },
                         new
                         {
                             Id = new Guid("c1890072-2753-4d91-8fd7-39dad7e7c161"),
                             GroupId = new Guid("abf2f0f5-ca6c-47c6-a018-dffd3e59d3ea"),
+                            MediumTypeId = 3,
                             Owner = "Helen Pollich",
-                            SerialNumber = "UID-92E308C4",
-                            Type = 2
+                            SerialNumber = "UID-92E308C4"
                         },
                         new
                         {
                             Id = new Guid("e9c918ae-ae3a-4690-856e-4d12e7311149"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Rosalia Hermiston",
-                            SerialNumber = "UID-4D7406A9",
-                            Type = 3
+                            SerialNumber = "UID-4D7406A9"
                         },
                         new
                         {
                             Id = new Guid("b8663068-8fa9-44ea-8b7f-5efa16f8a529"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Camryn Kessler",
-                            SerialNumber = "UID-94D8BE2F",
-                            Type = 3
+                            SerialNumber = "UID-94D8BE2F"
                         },
                         new
                         {
                             Id = new Guid("e9bbdceb-e901-456e-b129-f0c0b676b660"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Trystan Doyle DDS",
-                            SerialNumber = "UID-E288BEDD",
-                            Type = 3
+                            SerialNumber = "UID-E288BEDD"
                         },
                         new
                         {
                             Id = new Guid("b01d3dda-fdb2-493d-8946-7d93e7cb8458"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Breanne Christiansen",
-                            SerialNumber = "UID-65FFCA2C",
-                            Type = 3
+                            SerialNumber = "UID-65FFCA2C"
                         },
                         new
                         {
                             Id = new Guid("a95296d4-282e-4b04-9f95-070d68ca0766"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Clement Dare",
-                            SerialNumber = "UID-A3F8600C",
-                            Type = 3
+                            SerialNumber = "UID-A3F8600C"
                         },
                         new
                         {
                             Id = new Guid("9caeef90-ddbf-4830-8be9-832153b334ba"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Casimer Doyle",
-                            SerialNumber = "UID-D58D998E",
-                            Type = 3
+                            SerialNumber = "UID-D58D998E"
                         },
                         new
                         {
                             Id = new Guid("1461edc8-4f52-489b-9286-f462ee131515"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Mya Hills",
-                            SerialNumber = "UID-87091016",
-                            Type = 3
+                            SerialNumber = "UID-87091016"
                         },
                         new
                         {
                             Id = new Guid("e9688b67-d427-44ae-9042-496e0a0f4793"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Miss Aurelio Rodriguez",
-                            SerialNumber = "UID-8D05FDA9",
-                            Type = 3
+                            SerialNumber = "UID-8D05FDA9"
                         },
                         new
                         {
                             Id = new Guid("40753f05-39fa-4711-942a-86abd73ab048"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Emmie Kirlin",
-                            SerialNumber = "UID-D3D747CD",
-                            Type = 3
+                            SerialNumber = "UID-D3D747CD"
                         },
                         new
                         {
                             Id = new Guid("467741f3-3700-4f17-9497-c8fd7bf37e39"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Camden Marquardt",
-                            SerialNumber = "UID-21F04AF7",
-                            Type = 3
+                            SerialNumber = "UID-21F04AF7"
                         },
                         new
                         {
                             Id = new Guid("ddca7fb5-32f1-4855-8359-174efa22fccb"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Ms. Pink Hessel",
-                            SerialNumber = "UID-EE577D31",
-                            Type = 3
+                            SerialNumber = "UID-EE577D31"
                         },
                         new
                         {
                             Id = new Guid("16a1e212-5ba1-4b2d-81b8-ac49143fef57"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Pearlie Von I",
-                            SerialNumber = "UID-5F4F0141",
-                            Type = 3
+                            SerialNumber = "UID-5F4F0141"
                         },
                         new
                         {
                             Id = new Guid("3572be2e-f7a3-4d7d-bad7-32a11053c7dc"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Kelli Swift",
-                            SerialNumber = "UID-FC2133D5",
-                            Type = 3
+                            SerialNumber = "UID-FC2133D5"
                         },
                         new
                         {
                             Id = new Guid("5b93c27c-8bcb-4337-94ca-bafee7e6b49e"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Raquel Raynor",
-                            SerialNumber = "UID-B75354DC",
-                            Type = 3
+                            SerialNumber = "UID-B75354DC"
                         },
                         new
                         {
                             Id = new Guid("60bb1716-6eec-4ec6-9d8c-81c72e8b2b50"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Noemie Ullrich",
-                            SerialNumber = "UID-5C56C7EC",
-                            Type = 3
+                            SerialNumber = "UID-5C56C7EC"
                         },
                         new
                         {
                             Id = new Guid("1ed42246-b53a-4fce-939f-431768ed1698"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Brendon Ruecker",
-                            SerialNumber = "UID-2693607D",
-                            Type = 3
+                            SerialNumber = "UID-2693607D"
                         },
                         new
                         {
                             Id = new Guid("8e303b10-0fd9-4899-b6f3-1f9870092566"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Walton Wilkinson IV",
-                            SerialNumber = "UID-57E11796",
-                            Type = 3
+                            SerialNumber = "UID-57E11796"
                         },
                         new
                         {
                             Id = new Guid("fd00be74-47ec-4fdb-98db-a34e2ddc0a21"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Lulu Kreiger",
-                            SerialNumber = "UID-4D447883",
-                            Type = 3
+                            SerialNumber = "UID-4D447883"
                         },
                         new
                         {
                             Id = new Guid("ba54b45a-4a8c-4367-99d1-aca848c8cab3"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Zola Stroman",
-                            SerialNumber = "UID-1781AECE",
-                            Type = 3
+                            SerialNumber = "UID-1781AECE"
                         },
                         new
                         {
                             Id = new Guid("330ddafc-70b4-4a17-b6c5-91288a2384ec"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Dino McKenzie",
-                            SerialNumber = "UID-B6DDA47E",
-                            Type = 3
+                            SerialNumber = "UID-B6DDA47E"
                         },
                         new
                         {
                             Id = new Guid("55f8731c-97d5-4ccb-a990-48cb28fdab09"),
                             GroupId = new Guid("39408213-bbd6-45f9-8833-1c50531dfdf1"),
+                            MediumTypeId = 2,
                             Owner = "Ayden Legros",
-                            SerialNumber = "UID-5A5DA1AD",
-                            Type = 3
+                            SerialNumber = "UID-5A5DA1AD"
                         },
                         new
                         {
                             Id = new Guid("a6c8bf5f-1f31-4526-bab3-35751b02745d"),
                             GroupId = new Guid("66857cbd-780e-4ac7-b2b4-4e27697e0f67"),
+                            MediumTypeId = 2,
                             Owner = "Rick Bayer DVM",
-                            SerialNumber = "UID-A72D5E72",
-                            Type = 3
+                            SerialNumber = "UID-A72D5E72"
                         },
                         new
                         {
                             Id = new Guid("69928e33-bae7-48a9-a35f-e5cd4d0ace80"),
                             GroupId = new Guid("66857cbd-780e-4ac7-b2b4-4e27697e0f67"),
+                            MediumTypeId = 2,
                             Owner = "Zula Cruickshank Sr.",
-                            SerialNumber = "UID-7603ECFF",
-                            Type = 3
+                            SerialNumber = "UID-7603ECFF"
                         },
                         new
                         {
                             Id = new Guid("77d85d14-3bbf-4c83-bc01-7919af95f3fa"),
                             GroupId = new Guid("66857cbd-780e-4ac7-b2b4-4e27697e0f67"),
+                            MediumTypeId = 2,
                             Owner = "Leslie Treutel",
-                            SerialNumber = "UID-5D6080D2",
-                            Type = 3
+                            SerialNumber = "UID-5D6080D2"
                         },
                         new
                         {
                             Id = new Guid("c4f69136-50ca-496a-bd72-8d1fc356af81"),
                             GroupId = new Guid("66857cbd-780e-4ac7-b2b4-4e27697e0f67"),
+                            MediumTypeId = 2,
                             Owner = "Berneice Parisian",
-                            SerialNumber = "UID-4F9B678C",
-                            Type = 3
+                            SerialNumber = "UID-4F9B678C"
                         },
                         new
                         {
                             Id = new Guid("0baae33b-bd14-40c1-aee1-ca2e3e111c4e"),
                             GroupId = new Guid("66857cbd-780e-4ac7-b2b4-4e27697e0f67"),
+                            MediumTypeId = 2,
                             Owner = "Tierra Schneider",
-                            SerialNumber = "UID-79EC88B2",
-                            Type = 3
+                            SerialNumber = "UID-79EC88B2"
                         },
                         new
                         {
                             Id = new Guid("df1ee00c-63e2-464e-b44a-72dba5553a3d"),
                             GroupId = new Guid("c33bc82c-b5d9-4f17-ae03-b8190e496bf3"),
+                            MediumTypeId = 2,
                             Owner = "Helen Beier",
-                            SerialNumber = "UID-15B2DF92",
-                            Type = 3
+                            SerialNumber = "UID-15B2DF92"
                         },
                         new
                         {
                             Id = new Guid("f7a1663a-ba3f-434e-b676-9796e35a7670"),
                             GroupId = new Guid("c33bc82c-b5d9-4f17-ae03-b8190e496bf3"),
+                            MediumTypeId = 2,
                             Owner = "Eula Metz",
-                            SerialNumber = "UID-E1CE6282",
-                            Type = 3
+                            SerialNumber = "UID-E1CE6282"
                         },
                         new
                         {
                             Id = new Guid("e05eebae-757c-472b-9134-e412edac118e"),
                             GroupId = new Guid("c33bc82c-b5d9-4f17-ae03-b8190e496bf3"),
+                            MediumTypeId = 2,
                             Owner = "Elyssa Lakin",
-                            SerialNumber = "UID-5DD0D401",
-                            Type = 3
+                            SerialNumber = "UID-5DD0D401"
                         },
                         new
                         {
                             Id = new Guid("7585060f-d86e-41bc-b9a9-e18c7bf750b2"),
                             GroupId = new Guid("c33bc82c-b5d9-4f17-ae03-b8190e496bf3"),
+                            MediumTypeId = 2,
                             Owner = "Haylie Bins V",
-                            SerialNumber = "UID-9450378C",
-                            Type = 3
+                            SerialNumber = "UID-9450378C"
                         },
                         new
                         {
                             Id = new Guid("893fd59f-5792-4b4a-ae3e-afb0ea9fc603"),
                             GroupId = new Guid("c33bc82c-b5d9-4f17-ae03-b8190e496bf3"),
+                            MediumTypeId = 2,
                             Owner = "Golden Mraz",
-                            SerialNumber = "UID-825D6F25",
-                            Type = 3
+                            SerialNumber = "UID-825D6F25"
                         },
                         new
                         {
                             Id = new Guid("4187350f-ec37-4dfd-a5cb-b6a6e0f0328a"),
                             GroupId = new Guid("dc4acc1a-2242-432a-8281-7e257c52e677"),
+                            MediumTypeId = 2,
                             Owner = "Ms. Arden Kreiger",
-                            SerialNumber = "UID-DA3A3B3B",
-                            Type = 3
+                            SerialNumber = "UID-DA3A3B3B"
                         },
                         new
                         {
                             Id = new Guid("7bb72be8-d967-459b-80af-fe6022485f43"),
                             GroupId = new Guid("dc4acc1a-2242-432a-8281-7e257c52e677"),
+                            MediumTypeId = 2,
                             Owner = "Jordan Cremin DDS",
-                            SerialNumber = "UID-E992DE06",
-                            Type = 3
+                            SerialNumber = "UID-E992DE06"
                         },
                         new
                         {
                             Id = new Guid("f351956e-f3c2-45c2-bad7-1271e4a8c323"),
                             GroupId = new Guid("dc4acc1a-2242-432a-8281-7e257c52e677"),
+                            MediumTypeId = 2,
                             Owner = "Vita Corwin",
-                            SerialNumber = "UID-62089CF8",
-                            Type = 3
+                            SerialNumber = "UID-62089CF8"
                         },
                         new
                         {
                             Id = new Guid("d2a97338-56d4-4b70-9516-8a350dca6716"),
                             GroupId = new Guid("dc4acc1a-2242-432a-8281-7e257c52e677"),
+                            MediumTypeId = 2,
                             Owner = "Bell Gulgowski",
-                            SerialNumber = "UID-4C73E472",
-                            Type = 3
+                            SerialNumber = "UID-4C73E472"
                         },
                         new
                         {
                             Id = new Guid("a2ac53c1-01c2-435d-9ed6-1c25e16c94f9"),
                             GroupId = new Guid("dc4acc1a-2242-432a-8281-7e257c52e677"),
+                            MediumTypeId = 2,
                             Owner = "Jack Macejkovic",
-                            SerialNumber = "UID-F0DB00F1",
-                            Type = 3
+                            SerialNumber = "UID-F0DB00F1"
                         },
                         new
                         {
                             Id = new Guid("3ff0d521-14af-4e40-8b30-6b8f10783e72"),
                             GroupId = new Guid("3a2dc9f1-9f72-4fbf-8b44-56324e999e53"),
+                            MediumTypeId = 2,
                             Owner = "Concepcion Zieme",
-                            SerialNumber = "UID-EBB3BCA7",
-                            Type = 3
+                            SerialNumber = "UID-EBB3BCA7"
                         },
                         new
                         {
                             Id = new Guid("cf977696-64ee-4c0a-bb69-b0dd6dad9005"),
                             GroupId = new Guid("3a2dc9f1-9f72-4fbf-8b44-56324e999e53"),
+                            MediumTypeId = 2,
                             Owner = "Dr. Reymundo Fay",
-                            SerialNumber = "UID-95211B5E",
-                            Type = 3
+                            SerialNumber = "UID-95211B5E"
                         },
                         new
                         {
                             Id = new Guid("7e78daee-1e8b-4357-9c01-c89746ecbe4b"),
                             GroupId = new Guid("3a2dc9f1-9f72-4fbf-8b44-56324e999e53"),
+                            MediumTypeId = 2,
                             Owner = "Lysanne Ritchie",
-                            SerialNumber = "UID-DB553815",
-                            Type = 3
+                            SerialNumber = "UID-DB553815"
                         },
                         new
                         {
                             Id = new Guid("c2c0257b-3612-4182-8070-ba17155aa6a6"),
                             GroupId = new Guid("3a2dc9f1-9f72-4fbf-8b44-56324e999e53"),
+                            MediumTypeId = 2,
                             Owner = "Nathanael Brakus",
-                            SerialNumber = "UID-73379682",
-                            Type = 3
+                            SerialNumber = "UID-73379682"
                         },
                         new
                         {
                             Id = new Guid("ab977feb-557c-49c4-9b41-e0b4c0b4da1f"),
                             GroupId = new Guid("3a2dc9f1-9f72-4fbf-8b44-56324e999e53"),
+                            MediumTypeId = 2,
                             Owner = "Myrl Kutch",
-                            SerialNumber = "UID-0102E627",
-                            Type = 3
+                            SerialNumber = "UID-0102E627"
                         },
                         new
                         {
                             Id = new Guid("8467c189-9b2c-4af8-97f4-1f698f5fb7d3"),
                             GroupId = new Guid("3a2dc9f1-9f72-4fbf-8b44-56324e999e53"),
+                            MediumTypeId = 2,
                             Owner = "Abigail Bogan",
-                            SerialNumber = "UID-070E9E88",
-                            Type = 3
+                            SerialNumber = "UID-070E9E88"
                         },
                         new
                         {
                             Id = new Guid("f28bb34e-fbac-4c07-ad19-6f50e48c4060"),
                             GroupId = new Guid("3a2dc9f1-9f72-4fbf-8b44-56324e999e53"),
+                            MediumTypeId = 2,
                             Owner = "Isabell Nicolas",
-                            SerialNumber = "UID-281DA06B",
-                            Type = 3
+                            SerialNumber = "UID-281DA06B"
                         },
                         new
                         {
                             Id = new Guid("00891798-227b-4a49-9715-195539aec196"),
                             GroupId = new Guid("3a2dc9f1-9f72-4fbf-8b44-56324e999e53"),
+                            MediumTypeId = 2,
                             Owner = "Domenica Fritsch",
-                            SerialNumber = "UID-DBFD732E",
-                            Type = 3
+                            SerialNumber = "UID-DBFD732E"
                         },
                         new
                         {
                             Id = new Guid("66f7f003-5129-4a3d-92ca-57e4ff81bb1d"),
                             GroupId = new Guid("3a2dc9f1-9f72-4fbf-8b44-56324e999e53"),
+                            MediumTypeId = 2,
                             Owner = "Gabrielle Kilback",
-                            SerialNumber = "UID-F3A4AAE7",
-                            Type = 3
+                            SerialNumber = "UID-F3A4AAE7"
                         },
                         new
                         {
                             Id = new Guid("eb427ccf-8ed2-4c60-b360-a224e45b0532"),
                             GroupId = new Guid("a9d4ac7b-754e-4a1f-b76e-34be75995d32"),
+                            MediumTypeId = 2,
                             Owner = "Corene Effertz",
-                            SerialNumber = "UID-8A62B48E",
-                            Type = 3
+                            SerialNumber = "UID-8A62B48E"
                         },
                         new
                         {
                             Id = new Guid("6a4e8e6a-d319-4cc4-9ac4-8853310ada2e"),
                             GroupId = new Guid("a9d4ac7b-754e-4a1f-b76e-34be75995d32"),
+                            MediumTypeId = 2,
                             Owner = "Vincent Lakin",
-                            SerialNumber = "UID-CF16E63E",
-                            Type = 3
+                            SerialNumber = "UID-CF16E63E"
                         },
                         new
                         {
                             Id = new Guid("0b7e5913-a851-4340-8947-82277866daf2"),
                             GroupId = new Guid("a9d4ac7b-754e-4a1f-b76e-34be75995d32"),
+                            MediumTypeId = 2,
                             Owner = "Margaretta Hyatt V",
-                            SerialNumber = "UID-7E8AF5C9",
-                            Type = 3
+                            SerialNumber = "UID-7E8AF5C9"
                         },
                         new
                         {
                             Id = new Guid("eff349b8-28e7-4dc0-8364-148a049b0de4"),
                             GroupId = new Guid("a9d4ac7b-754e-4a1f-b76e-34be75995d32"),
+                            MediumTypeId = 2,
                             Owner = "Ofelia Sporer DVM",
-                            SerialNumber = "UID-DA01B45C",
-                            Type = 3
+                            SerialNumber = "UID-DA01B45C"
                         },
                         new
                         {
                             Id = new Guid("3cd8799b-9127-4b86-b235-1a5571fe98fe"),
                             GroupId = new Guid("a9d4ac7b-754e-4a1f-b76e-34be75995d32"),
+                            MediumTypeId = 2,
                             Owner = "Ora Hermiston",
-                            SerialNumber = "UID-E4FC2BC9",
-                            Type = 3
+                            SerialNumber = "UID-E4FC2BC9"
                         },
                         new
                         {
                             Id = new Guid("57273b58-2288-4274-b6d7-476831c52f99"),
                             GroupId = new Guid("a9d4ac7b-754e-4a1f-b76e-34be75995d32"),
+                            MediumTypeId = 2,
                             Owner = "Miss Arnaldo Jenkins",
-                            SerialNumber = "UID-A43A67C6",
-                            Type = 3
+                            SerialNumber = "UID-A43A67C6"
                         },
                         new
                         {
                             Id = new Guid("4b583d96-3541-4172-8dba-78a4efe2ba6c"),
                             GroupId = new Guid("a9d4ac7b-754e-4a1f-b76e-34be75995d32"),
+                            MediumTypeId = 2,
                             Owner = "Faye Greenholt I",
-                            SerialNumber = "UID-D69797CC",
-                            Type = 3
+                            SerialNumber = "UID-D69797CC"
                         },
                         new
                         {
                             Id = new Guid("baaffc45-63e6-4e97-83f9-1560382508c8"),
                             GroupId = new Guid("a9d4ac7b-754e-4a1f-b76e-34be75995d32"),
+                            MediumTypeId = 2,
                             Owner = "Mr. Rene Harber",
-                            SerialNumber = "UID-76DEAEBB",
-                            Type = 3
+                            SerialNumber = "UID-76DEAEBB"
                         },
                         new
                         {
                             Id = new Guid("3ef9ec9e-b5a5-4532-ada2-ee7c2e5370de"),
                             GroupId = new Guid("a802c953-4219-4b63-81bf-2a121a5c543c"),
+                            MediumTypeId = 2,
                             Owner = "Pablo Bahringer",
-                            SerialNumber = "UID-0A1F56B6",
-                            Type = 3
+                            SerialNumber = "UID-0A1F56B6"
                         },
                         new
                         {
                             Id = new Guid("478c3c11-36ba-47f2-8c59-b112530fb391"),
                             GroupId = new Guid("a802c953-4219-4b63-81bf-2a121a5c543c"),
+                            MediumTypeId = 2,
                             Owner = "Otilia Shanahan",
-                            SerialNumber = "UID-B4703B1D",
-                            Type = 3
+                            SerialNumber = "UID-B4703B1D"
                         },
                         new
                         {
                             Id = new Guid("0681a85c-476d-446b-9210-f8e7a04aa6af"),
                             GroupId = new Guid("a802c953-4219-4b63-81bf-2a121a5c543c"),
+                            MediumTypeId = 2,
                             Owner = "Julianne Upton",
-                            SerialNumber = "UID-744990A6",
-                            Type = 3
+                            SerialNumber = "UID-744990A6"
                         },
                         new
                         {
                             Id = new Guid("fa442e23-3afe-4150-9dde-13a036d5b2f9"),
                             GroupId = new Guid("a802c953-4219-4b63-81bf-2a121a5c543c"),
+                            MediumTypeId = 2,
                             Owner = "Larue Rice",
-                            SerialNumber = "UID-38A3630C",
-                            Type = 3
+                            SerialNumber = "UID-38A3630C"
                         },
                         new
                         {
                             Id = new Guid("d7b3215e-0e8f-4c9e-a26d-890be545d465"),
                             GroupId = new Guid("a802c953-4219-4b63-81bf-2a121a5c543c"),
+                            MediumTypeId = 2,
                             Owner = "Mr. Celestino Schaden",
-                            SerialNumber = "UID-B8AD5996",
-                            Type = 3
+                            SerialNumber = "UID-B8AD5996"
                         },
                         new
                         {
                             Id = new Guid("928d547e-09f4-4585-bd40-72e75c5bda84"),
                             GroupId = new Guid("a802c953-4219-4b63-81bf-2a121a5c543c"),
+                            MediumTypeId = 2,
                             Owner = "Jeramy Leffler",
-                            SerialNumber = "UID-D452E4BD",
-                            Type = 3
+                            SerialNumber = "UID-D452E4BD"
                         },
                         new
                         {
                             Id = new Guid("4de2b510-2f48-4721-812d-60cd8868df64"),
                             GroupId = new Guid("a802c953-4219-4b63-81bf-2a121a5c543c"),
+                            MediumTypeId = 2,
                             Owner = "Mr. Talon Dickens",
-                            SerialNumber = "UID-E7263924",
-                            Type = 3
+                            SerialNumber = "UID-E7263924"
                         },
                         new
                         {
                             Id = new Guid("9b57b2da-b167-4cb1-89cf-23522a8c1bf6"),
                             GroupId = new Guid("a802c953-4219-4b63-81bf-2a121a5c543c"),
+                            MediumTypeId = 2,
                             Owner = "Effie Barton IV",
-                            SerialNumber = "UID-7F67408F",
-                            Type = 3
+                            SerialNumber = "UID-7F67408F"
                         },
                         new
                         {
                             Id = new Guid("1f2bf796-b185-4f08-bcec-8277e301c785"),
                             GroupId = new Guid("a802c953-4219-4b63-81bf-2a121a5c543c"),
+                            MediumTypeId = 2,
                             Owner = "Terrence O'Hara",
-                            SerialNumber = "UID-1AC9C2D8",
-                            Type = 3
+                            SerialNumber = "UID-1AC9C2D8"
                         },
                         new
                         {
                             Id = new Guid("b1760599-9f20-4bfc-812b-34c68f86d741"),
                             GroupId = new Guid("a802c953-4219-4b63-81bf-2a121a5c543c"),
+                            MediumTypeId = 2,
                             Owner = "Gladyce Hane",
-                            SerialNumber = "UID-0238753A",
-                            Type = 3
+                            SerialNumber = "UID-0238753A"
                         },
                         new
                         {
                             Id = new Guid("1720ff8f-8416-4124-8b1b-2f80c16d9ac0"),
                             GroupId = new Guid("a802c953-4219-4b63-81bf-2a121a5c543c"),
+                            MediumTypeId = 2,
                             Owner = "Marcella Schinner",
-                            SerialNumber = "UID-EB92C0A9",
-                            Type = 3
+                            SerialNumber = "UID-EB92C0A9"
                         },
                         new
                         {
                             Id = new Guid("a9754910-e6a0-4d28-9e36-59b08cdbfc08"),
                             GroupId = new Guid("a802c953-4219-4b63-81bf-2a121a5c543c"),
+                            MediumTypeId = 2,
                             Owner = "Emely Berge Sr.",
-                            SerialNumber = "UID-A1607C57",
-                            Type = 3
+                            SerialNumber = "UID-A1607C57"
                         },
                         new
                         {
                             Id = new Guid("8e034ce4-d272-4a2a-aaa1-1d0e39ebf219"),
                             GroupId = new Guid("a802c953-4219-4b63-81bf-2a121a5c543c"),
+                            MediumTypeId = 2,
                             Owner = "Mrs. Isidro Goyette",
-                            SerialNumber = "UID-313B4CB8",
-                            Type = 3
+                            SerialNumber = "UID-313B4CB8"
                         },
                         new
                         {
                             Id = new Guid("ebacd990-d439-4177-b3bf-fad155fd3ff1"),
                             GroupId = new Guid("a802c953-4219-4b63-81bf-2a121a5c543c"),
+                            MediumTypeId = 2,
                             Owner = "Mrs. Fanny Connelly",
-                            SerialNumber = "UID-17FC1E14",
-                            Type = 3
+                            SerialNumber = "UID-17FC1E14"
                         },
                         new
                         {
                             Id = new Guid("0600111a-06d7-45b5-9163-872cf21def9c"),
                             GroupId = new Guid("a802c953-4219-4b63-81bf-2a121a5c543c"),
+                            MediumTypeId = 2,
                             Owner = "Joel VonRueden V",
-                            SerialNumber = "UID-E9002630",
-                            Type = 3
+                            SerialNumber = "UID-E9002630"
                         },
                         new
                         {
                             Id = new Guid("f3d6a54a-0600-4a29-95fe-fc3e52bed6d6"),
                             GroupId = new Guid("f445bec2-ccb5-4cb6-aff2-dec53f10d292"),
+                            MediumTypeId = 3,
                             Owner = "Meda Feeney",
-                            SerialNumber = "UID-D81E3137",
-                            Type = 2
+                            SerialNumber = "UID-D81E3137"
                         },
                         new
                         {
                             Id = new Guid("b8928763-e550-481e-a98c-3927d0c81506"),
                             GroupId = new Guid("f445bec2-ccb5-4cb6-aff2-dec53f10d292"),
+                            MediumTypeId = 3,
                             Owner = "Laverna Skiles",
-                            SerialNumber = "UID-80C35FDC",
-                            Type = 2
+                            SerialNumber = "UID-80C35FDC"
                         },
                         new
                         {
                             Id = new Guid("8b12f270-b96c-46ee-ae58-d751092dbee6"),
                             GroupId = new Guid("f445bec2-ccb5-4cb6-aff2-dec53f10d292"),
+                            MediumTypeId = 3,
                             Owner = "Nedra Hartmann V",
-                            SerialNumber = "UID-AB27F9C4",
-                            Type = 2
+                            SerialNumber = "UID-AB27F9C4"
                         },
                         new
                         {
                             Id = new Guid("563c312f-7d47-4122-b321-5976921bd4be"),
                             GroupId = new Guid("f445bec2-ccb5-4cb6-aff2-dec53f10d292"),
+                            MediumTypeId = 3,
                             Owner = "Derek Weber",
-                            SerialNumber = "UID-2CE66793",
-                            Type = 2
+                            SerialNumber = "UID-2CE66793"
                         },
                         new
                         {
                             Id = new Guid("c6a900d5-9463-45e1-968e-7cabf5492449"),
                             GroupId = new Guid("f445bec2-ccb5-4cb6-aff2-dec53f10d292"),
+                            MediumTypeId = 3,
                             Owner = "Hailey Reichert III",
-                            SerialNumber = "UID-D153E307",
-                            Type = 2
+                            SerialNumber = "UID-D153E307"
                         },
                         new
                         {
                             Id = new Guid("aaa46326-6736-4d41-b6fb-f510c9b349df"),
                             GroupId = new Guid("f445bec2-ccb5-4cb6-aff2-dec53f10d292"),
+                            MediumTypeId = 3,
                             Owner = "Lamar Abbott",
-                            SerialNumber = "UID-1E0334B0",
-                            Type = 2
+                            SerialNumber = "UID-1E0334B0"
                         },
                         new
                         {
                             Id = new Guid("7f255c19-7948-4ee3-8369-af5e266e9e43"),
                             GroupId = new Guid("f445bec2-ccb5-4cb6-aff2-dec53f10d292"),
+                            MediumTypeId = 3,
                             Owner = "Hoyt Batz",
-                            SerialNumber = "UID-6978F9BB",
-                            Type = 2
+                            SerialNumber = "UID-6978F9BB"
                         },
                         new
                         {
                             Id = new Guid("1f47f6c1-a770-4eeb-8f5a-1b606239bea0"),
                             GroupId = new Guid("f445bec2-ccb5-4cb6-aff2-dec53f10d292"),
+                            MediumTypeId = 3,
                             Owner = "Jakayla Ullrich",
-                            SerialNumber = "UID-6EC98F3F",
-                            Type = 2
+                            SerialNumber = "UID-6EC98F3F"
                         },
                         new
                         {
                             Id = new Guid("291834ee-c525-4533-9e63-2490dc374801"),
                             GroupId = new Guid("f445bec2-ccb5-4cb6-aff2-dec53f10d292"),
+                            MediumTypeId = 3,
                             Owner = "Dr. Marta Heller",
-                            SerialNumber = "UID-8F35CFFC",
-                            Type = 2
+                            SerialNumber = "UID-8F35CFFC"
                         },
                         new
                         {
                             Id = new Guid("81b2c428-a301-4f5c-9650-221f41b71c6d"),
                             GroupId = new Guid("f445bec2-ccb5-4cb6-aff2-dec53f10d292"),
+                            MediumTypeId = 3,
                             Owner = "Hallie Rice",
-                            SerialNumber = "UID-EAC6D3D4",
-                            Type = 2
+                            SerialNumber = "UID-EAC6D3D4"
                         },
                         new
                         {
                             Id = new Guid("3f6bce56-66db-4543-9fac-83a3c48fcb8a"),
                             GroupId = new Guid("f445bec2-ccb5-4cb6-aff2-dec53f10d292"),
+                            MediumTypeId = 3,
                             Owner = "Queenie Mraz Sr.",
-                            SerialNumber = "UID-01C9773F",
-                            Type = 2
+                            SerialNumber = "UID-01C9773F"
                         },
                         new
                         {
                             Id = new Guid("6fb7fce4-d922-4a63-a7e5-cac8e5bebc12"),
                             GroupId = new Guid("f445bec2-ccb5-4cb6-aff2-dec53f10d292"),
+                            MediumTypeId = 3,
                             Owner = "Cody Hessel",
-                            SerialNumber = "UID-6AD74FC8",
-                            Type = 2
+                            SerialNumber = "UID-6AD74FC8"
                         },
                         new
                         {
                             Id = new Guid("0d8aaf21-b58a-46f8-9236-fc23793b5342"),
                             GroupId = new Guid("20645cff-16ec-4ba2-9089-65595d07c6e4"),
+                            MediumTypeId = 3,
                             Owner = "Emelie Rosenbaum IV",
-                            SerialNumber = "UID-02D80F53",
-                            Type = 2
+                            SerialNumber = "UID-02D80F53"
                         },
                         new
                         {
                             Id = new Guid("931e1032-4916-4911-af3c-6ee49f0c548a"),
                             GroupId = new Guid("20645cff-16ec-4ba2-9089-65595d07c6e4"),
+                            MediumTypeId = 3,
                             Owner = "Clementine Heathcote",
-                            SerialNumber = "UID-51C69E60",
-                            Type = 2
+                            SerialNumber = "UID-51C69E60"
                         },
                         new
                         {
                             Id = new Guid("c3d2d121-145b-4970-9e17-630983c8dc98"),
                             GroupId = new Guid("20645cff-16ec-4ba2-9089-65595d07c6e4"),
+                            MediumTypeId = 3,
                             Owner = "Treva Muller",
-                            SerialNumber = "UID-0CB36E1D",
-                            Type = 2
+                            SerialNumber = "UID-0CB36E1D"
                         },
                         new
                         {
                             Id = new Guid("08d95d37-c85d-4b90-8814-1a90776f9842"),
                             GroupId = new Guid("20645cff-16ec-4ba2-9089-65595d07c6e4"),
+                            MediumTypeId = 3,
                             Owner = "Queenie Von",
-                            SerialNumber = "UID-49BB6B9E",
-                            Type = 2
+                            SerialNumber = "UID-49BB6B9E"
                         },
                         new
                         {
                             Id = new Guid("f1cedc21-c83b-48ee-a68e-8c82bbdb26c5"),
                             GroupId = new Guid("20645cff-16ec-4ba2-9089-65595d07c6e4"),
+                            MediumTypeId = 3,
                             Owner = "Clay Cremin",
-                            SerialNumber = "UID-443A12B4",
-                            Type = 2
+                            SerialNumber = "UID-443A12B4"
                         },
                         new
                         {
                             Id = new Guid("a7481455-6045-4ecc-80dd-0d0416dcd185"),
                             GroupId = new Guid("20645cff-16ec-4ba2-9089-65595d07c6e4"),
+                            MediumTypeId = 3,
                             Owner = "Germaine Hermann",
-                            SerialNumber = "UID-B1B0B358",
-                            Type = 2
+                            SerialNumber = "UID-B1B0B358"
                         },
                         new
                         {
                             Id = new Guid("6002e8cb-92cf-49aa-be33-adce8e72f75d"),
                             GroupId = new Guid("ad457a8e-876e-4063-88e0-2ce10b9ab334"),
+                            MediumTypeId = 2,
                             Owner = "Morgan Erdman",
-                            SerialNumber = "UID-D62A7212",
-                            Type = 3
+                            SerialNumber = "UID-D62A7212"
                         },
                         new
                         {
                             Id = new Guid("6d38f072-4a3d-43c8-ab35-34e9764825a3"),
                             GroupId = new Guid("ad457a8e-876e-4063-88e0-2ce10b9ab334"),
+                            MediumTypeId = 2,
                             Owner = "Dr. Stella Donnelly",
-                            SerialNumber = "UID-F17CDF2E",
-                            Type = 3
+                            SerialNumber = "UID-F17CDF2E"
                         },
                         new
                         {
                             Id = new Guid("742fb688-9d30-4fce-b153-ca6f29873377"),
                             GroupId = new Guid("ad457a8e-876e-4063-88e0-2ce10b9ab334"),
+                            MediumTypeId = 2,
                             Owner = "Michaela Huels",
-                            SerialNumber = "UID-2B6244E5",
-                            Type = 3
+                            SerialNumber = "UID-2B6244E5"
                         },
                         new
                         {
                             Id = new Guid("f107b8dc-c2ee-49b3-8f11-5a1128a51c51"),
                             GroupId = new Guid("ad457a8e-876e-4063-88e0-2ce10b9ab334"),
+                            MediumTypeId = 2,
                             Owner = "Lester McDermott",
-                            SerialNumber = "UID-CE8317D8",
-                            Type = 3
+                            SerialNumber = "UID-CE8317D8"
                         },
                         new
                         {
                             Id = new Guid("b5482e40-fafd-4a10-84f5-b14128c16be1"),
                             GroupId = new Guid("ad457a8e-876e-4063-88e0-2ce10b9ab334"),
+                            MediumTypeId = 2,
                             Owner = "Danielle Stark Sr.",
-                            SerialNumber = "UID-6A3B4B84",
-                            Type = 3
+                            SerialNumber = "UID-6A3B4B84"
                         },
                         new
                         {
                             Id = new Guid("27e66bbd-b499-47e9-9d0c-5a6e421fc021"),
                             GroupId = new Guid("ad457a8e-876e-4063-88e0-2ce10b9ab334"),
+                            MediumTypeId = 2,
                             Owner = "Karelle Durgan",
-                            SerialNumber = "UID-A15A2AEC",
-                            Type = 3
+                            SerialNumber = "UID-A15A2AEC"
                         },
                         new
                         {
                             Id = new Guid("1bc23ee7-8629-4619-8283-cc7715d76fd0"),
                             GroupId = new Guid("ad457a8e-876e-4063-88e0-2ce10b9ab334"),
+                            MediumTypeId = 2,
                             Owner = "Kelley Erdman",
-                            SerialNumber = "UID-C986DB58",
-                            Type = 3
+                            SerialNumber = "UID-C986DB58"
                         },
                         new
                         {
                             Id = new Guid("8474188c-0ee3-4f97-a616-724d31c874ba"),
                             GroupId = new Guid("ad457a8e-876e-4063-88e0-2ce10b9ab334"),
+                            MediumTypeId = 2,
                             Owner = "Mr. Luther Terry",
-                            SerialNumber = "UID-DCC4A18B",
-                            Type = 3
+                            SerialNumber = "UID-DCC4A18B"
                         },
                         new
                         {
                             Id = new Guid("f6bcdf47-fd49-4bba-9960-af63e555ce21"),
                             GroupId = new Guid("a8fb8533-15dd-4a12-bd52-977b59caf77d"),
+                            MediumTypeId = 2,
                             Owner = "Rebecca Barrows",
-                            SerialNumber = "UID-08889EC2",
-                            Type = 3
+                            SerialNumber = "UID-08889EC2"
                         },
                         new
                         {
                             Id = new Guid("af28fd46-b690-4788-ae9c-565ed190ba31"),
                             GroupId = new Guid("a8fb8533-15dd-4a12-bd52-977b59caf77d"),
+                            MediumTypeId = 2,
                             Owner = "Verda Reichert",
-                            SerialNumber = "UID-9AABD45B",
-                            Type = 3
+                            SerialNumber = "UID-9AABD45B"
                         },
                         new
                         {
                             Id = new Guid("89261aba-dad0-4a5e-bc17-72759c67cccb"),
                             GroupId = new Guid("a8fb8533-15dd-4a12-bd52-977b59caf77d"),
+                            MediumTypeId = 2,
                             Owner = "Joey Murray",
-                            SerialNumber = "UID-4DB71AF6",
-                            Type = 3
+                            SerialNumber = "UID-4DB71AF6"
                         },
                         new
                         {
                             Id = new Guid("81222132-93c6-49c2-bcf5-93ec995f104c"),
                             GroupId = new Guid("a8fb8533-15dd-4a12-bd52-977b59caf77d"),
+                            MediumTypeId = 2,
                             Owner = "Derick Ryan",
-                            SerialNumber = "UID-F670F88B",
-                            Type = 3
+                            SerialNumber = "UID-F670F88B"
                         });
                 });
 
@@ -1583,7 +1660,16 @@ namespace SimonsVoss.LSM.DB.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_locks_buildings_building_id");
 
+                    b.HasOne("SimonsVoss.LSM.Core.Entities.Dictionaries.LockType", "LockType")
+                        .WithMany("Locks")
+                        .HasForeignKey("LockTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_locks_lock_type_lock_type_id");
+
                     b.Navigation("Building");
+
+                    b.Navigation("LockType");
                 });
 
             modelBuilder.Entity("SimonsVoss.LSM.Core.Entities.Medium", b =>
@@ -1595,12 +1681,31 @@ namespace SimonsVoss.LSM.DB.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_media_groups_group_id");
 
+                    b.HasOne("SimonsVoss.LSM.Core.Entities.Dictionaries.MediumType", "MediumType")
+                        .WithMany("Media")
+                        .HasForeignKey("MediumTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_media_medium_type_medium_type_id");
+
                     b.Navigation("Group");
+
+                    b.Navigation("MediumType");
                 });
 
             modelBuilder.Entity("SimonsVoss.LSM.Core.Entities.Building", b =>
                 {
                     b.Navigation("Locks");
+                });
+
+            modelBuilder.Entity("SimonsVoss.LSM.Core.Entities.Dictionaries.LockType", b =>
+                {
+                    b.Navigation("Locks");
+                });
+
+            modelBuilder.Entity("SimonsVoss.LSM.Core.Entities.Dictionaries.MediumType", b =>
+                {
+                    b.Navigation("Media");
                 });
 
             modelBuilder.Entity("SimonsVoss.LSM.Core.Entities.Group", b =>

@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using SimonsVoss.LSM.Core;
+using SimonsVoss.LSM.Core.Abstractions;
+using SimonsVoss.LSM.DB.Repositories;
 
 namespace SimonsVoss.LSM.DB;
 
@@ -7,17 +10,33 @@ public static class Entry
 {
     public static IServiceCollection AddPostgreSql(
         this IServiceCollection services,
-        string connectionString)
+        Action<PostgresDbOptions>? optionsAction)
     {
-        if (string.IsNullOrWhiteSpace(connectionString))
-            throw new ArgumentException(nameof(connectionString));
+        var options = new PostgresDbOptions();
+        optionsAction?.Invoke(options);
+
+        return services.AddPostgreSql(options);
+    }
+    
+    public static IServiceCollection AddPostgreSql(
+        this IServiceCollection services,
+        PostgresDbOptions options)
+    {
+        if (options == null) throw new ArgumentNullException(nameof(options));
+        
+        if (string.IsNullOrWhiteSpace(options.ConnectionString))
+            throw new ArgumentException(nameof(options.ConnectionString));
 
         services.AddDbContext<EfContext>(opt =>
         {
+            if (options?.SqlLoggerFactory != null)
+                opt.UseLoggerFactory(options.SqlLoggerFactory);
+
             opt.UseSnakeCaseNamingConvention();
-            opt.UseNpgsql(connectionString);
-            opt.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
+            opt.UseNpgsql(options!.ConnectionString!);
         });
+        
+        services.AddTransient<ILockRepository, LockRepository>();
         
         return services;
     }

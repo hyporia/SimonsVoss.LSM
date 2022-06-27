@@ -1,6 +1,5 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SimonsVoss.LSM.Core.Requests.SearchEntity;
 using SimonsVoss.LSM.DB;
 
 namespace SimonsVoss.LSM.Web.Controllers;
@@ -20,12 +19,10 @@ public class BuildingController : ControllerBase
         _context = context;
     }
 
-    [HttpGet]
-    public async Task<SearchEntityQueryResponse> GetAsync([FromQuery]SearchEntityQuery query)
-    {
-        EfContext.GetDataToSeed(out var buildings, out var locks, out var groups, out var media);
-        var ids = media.Where(medium => !groups.Any(group => medium.GroupId == group.Id)).ToList();
-        var resp = await _mediator.Send(query);
-        return resp;
-    }
+    // [HttpGet]
+    // public async Task<SearchEntityQueryResponse> GetAsync([FromQuery] SearchEntityQuery query)
+    // {
+    //     var resp = await _mediator.Send(query);
+    //     return resp;
+    // }
 }

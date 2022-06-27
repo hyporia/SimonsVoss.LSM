@@ -12,7 +12,7 @@ using SimonsVoss.LSM.DB;
 namespace SimonsVoss.LSM.DB.Migrations
 {
     [DbContext(typeof(EfContext))]
-    [Migration("20220627093023_Initial")]
+    [Migration("20220627162302_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,6 +49,46 @@ namespace SimonsVoss.LSM.DB.Migrations
                         .HasName("pk_buildings");
 
                     b.ToTable("buildings", "public");
+                });
+
+            modelBuilder.Entity("SimonsVoss.LSM.Core.Entities.Dictionaries.LockType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("value");
+
+                    b.HasKey("Id")
+                        .HasName("pk_lock_type");
+
+                    b.ToTable("lock_type", "public");
+                });
+
+            modelBuilder.Entity("SimonsVoss.LSM.Core.Entities.Dictionaries.MediumType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("value");
+
+                    b.HasKey("Id")
+                        .HasName("pk_medium_type");
+
+                    b.ToTable("medium_type", "public");
                 });
 
             modelBuilder.Entity("SimonsVoss.LSM.Core.Entities.Group", b =>
@@ -93,6 +133,10 @@ namespace SimonsVoss.LSM.DB.Migrations
                         .HasColumnType("text")
                         .HasColumnName("floor");
 
+                    b.Property<int>("LockTypeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("lock_type_id");
+
                     b.Property<string>("Name")
                         .HasColumnType("text")
                         .HasColumnName("name");
@@ -105,15 +149,14 @@ namespace SimonsVoss.LSM.DB.Migrations
                         .HasColumnType("text")
                         .HasColumnName("serial_number");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer")
-                        .HasColumnName("type");
-
                     b.HasKey("Id")
                         .HasName("pk_locks");
 
                     b.HasIndex("BuildingId")
                         .HasDatabaseName("ix_locks_building_id");
+
+                    b.HasIndex("LockTypeId")
+                        .HasDatabaseName("ix_locks_lock_type_id");
 
                     b.ToTable("locks", "public");
                 });
@@ -134,6 +177,10 @@ namespace SimonsVoss.LSM.DB.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("group_id");
 
+                    b.Property<int>("MediumTypeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("medium_type_id");
+
                     b.Property<string>("Owner")
                         .HasColumnType("text")
                         .HasColumnName("owner");
@@ -142,15 +189,14 @@ namespace SimonsVoss.LSM.DB.Migrations
                         .HasColumnType("text")
                         .HasColumnName("serial_number");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer")
-                        .HasColumnName("type");
-
                     b.HasKey("Id")
                         .HasName("pk_media");
 
                     b.HasIndex("GroupId")
                         .HasDatabaseName("ix_media_group_id");
+
+                    b.HasIndex("MediumTypeId")
+                        .HasDatabaseName("ix_media_medium_type_id");
 
                     b.ToTable("media", "public");
                 });
@@ -164,7 +210,16 @@ namespace SimonsVoss.LSM.DB.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_locks_buildings_building_id");
 
+                    b.HasOne("SimonsVoss.LSM.Core.Entities.Dictionaries.LockType", "LockType")
+                        .WithMany("Locks")
+                        .HasForeignKey("LockTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_locks_lock_type_lock_type_id");
+
                     b.Navigation("Building");
+
+                    b.Navigation("LockType");
                 });
 
             modelBuilder.Entity("SimonsVoss.LSM.Core.Entities.Medium", b =>
@@ -176,12 +231,31 @@ namespace SimonsVoss.LSM.DB.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_media_groups_group_id");
 
+                    b.HasOne("SimonsVoss.LSM.Core.Entities.Dictionaries.MediumType", "MediumType")
+                        .WithMany("Media")
+                        .HasForeignKey("MediumTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_media_medium_type_medium_type_id");
+
                     b.Navigation("Group");
+
+                    b.Navigation("MediumType");
                 });
 
             modelBuilder.Entity("SimonsVoss.LSM.Core.Entities.Building", b =>
                 {
                     b.Navigation("Locks");
+                });
+
+            modelBuilder.Entity("SimonsVoss.LSM.Core.Entities.Dictionaries.LockType", b =>
+                {
+                    b.Navigation("Locks");
+                });
+
+            modelBuilder.Entity("SimonsVoss.LSM.Core.Entities.Dictionaries.MediumType", b =>
+                {
+                    b.Navigation("Media");
                 });
 
             modelBuilder.Entity("SimonsVoss.LSM.Core.Entities.Group", b =>

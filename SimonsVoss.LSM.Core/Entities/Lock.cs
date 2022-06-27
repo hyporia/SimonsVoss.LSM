@@ -1,4 +1,5 @@
-using SimonsVoss.LSM.Core.Enums;
+using System.Text.Json.Serialization;
+using SimonsVoss.LSM.Core.Entities.Dictionaries;
 
 namespace SimonsVoss.LSM.Core.Entities;
 
@@ -6,7 +7,8 @@ public class Lock : BaseEntity
 {
     public Guid BuildingId { get; set; }
 
-    public LockType Type { get; set; }
+    [JsonPropertyName("type")]
+    public int LockTypeId { get; set; }
 
     public string? Name { get; set; }
 
@@ -20,6 +22,8 @@ public class Lock : BaseEntity
     #region navigation properties
     
     public Building? Building { get; set; }
+    
+    public LockType? LockType { get; set; }
 
     #endregion
 }

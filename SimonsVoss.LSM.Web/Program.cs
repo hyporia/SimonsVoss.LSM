@@ -8,7 +8,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddPostgreSql(builder.Configuration.GetConnectionString("DB"));
+builder.Services.AddPostgreSql(x =>
+{
+    x.ConnectionString = builder.Configuration.GetConnectionString("DB");
+    x.SqlLoggerFactory = builder.Environment.IsDevelopment()
+        ? LoggerFactory.Create(builder => builder.AddConsole())
+        : null;
+});
 builder.Services.AddCore();
 
 var app = builder.Build();

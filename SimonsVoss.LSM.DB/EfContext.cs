@@ -3,8 +3,9 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using SimonsVoss.LSM.Core;
 using SimonsVoss.LSM.Core.Entities;
-using SimonsVoss.LSM.Core.Enums;
+using SimonsVoss.LSM.Core.Entities.Dictionaries;
 
 namespace SimonsVoss.LSM.DB;
 
@@ -28,14 +29,26 @@ public class EfContext : DbContext
         modelBuilder.HasDefaultSchema(DefaultSchema);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(EfContext).Assembly);
 
-        GetDataToSeed(out var buildings, out var locks, out var groups, out var media);
+        GetDataToSeed(
+            out var lockTypes,
+            out var mediumTypes,
+            out var buildings,
+            out var locks,
+            out var groups,
+            out var media
+        );
+        
+        modelBuilder.Entity<MediumType>().HasData(mediumTypes);
+        modelBuilder.Entity<LockType>().HasData(lockTypes);
         modelBuilder.Entity<Building>().HasData(buildings);
         modelBuilder.Entity<Lock>().HasData(locks);
         modelBuilder.Entity<Group>().HasData(groups);
         modelBuilder.Entity<Medium>().HasData(media);
     }
 
-    public static void GetDataToSeed(
+    private static void GetDataToSeed(
+        out List<LockType> lockTypes,
+        out List<MediumType> mediumTypes,
         out List<Building> buildings,
         out List<Lock> locks,
         out List<Group> groups,
@@ -49,8 +62,9 @@ public class EfContext : DbContext
         var options = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
-            Converters = { new JsonStringEnumConverter() }
         };
+        lockTypes = jsonDoc.RootElement.GetProperty("lockTypes").Deserialize<List<LockType>>(options)!;
+        mediumTypes = jsonDoc.RootElement.GetProperty("mediumTypes").Deserialize<List<MediumType>>(options)!;
         buildings = jsonDoc.RootElement.GetProperty("buildings").Deserialize<List<Building>>(options)!;
         locks = jsonDoc.RootElement.GetProperty("locks").Deserialize<List<Lock>>(options)!;
         groups = jsonDoc.RootElement.GetProperty("groups").Deserialize<List<Group>>(options)!;

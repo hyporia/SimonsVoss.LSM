@@ -13,7 +13,7 @@ public class Building : BaseEntity
 
     #region navigation properties
     
-    public HashSet<Lock> Locks { get; set; }
+    public ICollection<Lock> Locks { get; set; }
 
     #endregion
 }

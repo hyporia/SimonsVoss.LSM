@@ -1,13 +1,12 @@
-namespace SimonsVoss.LSM.Core.Entities;
+namespace SimonsVoss.LSM.Core.Entities.Dictionaries;
 
-public class Group : BaseEntity
+public class MediumType : BaseDictionaryEntity
 {
-    public Group()
+    public MediumType()
     {
         Media = new HashSet<Medium>();
     }
-    public string? Name { get; set; }
-
+    
     #region navigation properties
 
     public ICollection<Medium> Media { get; set; }

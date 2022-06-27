@@ -1,4 +1,5 @@
-using SimonsVoss.LSM.Core.Enums;
+using System.Text.Json.Serialization;
+using SimonsVoss.LSM.Core.Entities.Dictionaries;
 
 namespace SimonsVoss.LSM.Core.Entities;
 
@@ -6,7 +7,8 @@ public class Medium : BaseEntity
 {
     public Guid GroupId { get; set; }
 
-    public MediumType Type { get; set; }
+    [JsonPropertyName("type")]
+    public int MediumTypeId { get; set; }
 
     public string? Owner { get; set; }
 
@@ -16,6 +18,8 @@ public class Medium : BaseEntity
     #region navigation properties
 
     public Group? Group { get; set; }
+    
+    public MediumType? MediumType { get; set; }
 
     #endregion
 }

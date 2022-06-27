@@ -14,8 +14,6 @@ public class LockConfiguration : BaseEntityConfiguration<Lock>
         
         builder.Property(x => x.Name);
         
-        builder.Property(x => x.Type);
-        
         builder.Property(x => x.RoomNumber);
         
         builder.Property(x => x.SerialNumber);
@@ -24,6 +22,12 @@ public class LockConfiguration : BaseEntityConfiguration<Lock>
             .WithMany(x => x.Locks)
             .HasPrincipalKey(x => x.Id)
             .HasForeignKey(x => x.BuildingId)
+            .OnDelete(DeleteBehavior.Restrict);
+        
+        builder.HasOne(x => x.LockType)
+            .WithMany(x => x.Locks)
+            .HasPrincipalKey(x => x.Id)
+            .HasForeignKey(x => x.LockTypeId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }
