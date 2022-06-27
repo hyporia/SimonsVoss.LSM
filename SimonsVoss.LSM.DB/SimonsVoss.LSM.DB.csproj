@@ -7,12 +7,24 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="EFCore.NamingConventions" Version="6.0.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.6">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
       <PackageReference Include="Npgsql" Version="6.0.5" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.5" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\SimonsVoss.LSM.Core\SimonsVoss.LSM.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="sv_lsm_data.json" />
+      <EmbeddedResource Include="sv_lsm_data.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>
