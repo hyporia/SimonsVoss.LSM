@@ -14,6 +14,8 @@ public class GetLocksQueryHandler : IRequestHandler<GetLocksQuery, GetLocksQuery
 
     public async Task<GetLocksQueryResponse> Handle(GetLocksQuery request, CancellationToken cancellationToken)
     {
-        return await _lockRepository.GetAsync(request, cancellationToken);
+        var filteredLocks = await _lockRepository.GetAsync(request.Term, cancellationToken);
+        
+        return new GetLocksQueryResponse();
     }
 }
