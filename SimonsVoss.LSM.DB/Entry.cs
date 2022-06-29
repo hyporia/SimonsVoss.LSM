@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SimonsVoss.LSM.Core.Abstractions;
-using SimonsVoss.LSM.DB.AutoMapper;
 using SimonsVoss.LSM.DB.Repositories;
 
 namespace SimonsVoss.LSM.DB;
@@ -35,9 +34,9 @@ public static class Entry
             opt.UseSnakeCaseNamingConvention();
             opt.UseNpgsql(options!.ConnectionString!);
         });
-
-        services.AddAutoMapper(options => { options.AddProfile(new MappingProfile()); });
+        
         services.AddTransient<ILockRepository, LockRepository>();
+        services.AddTransient<ISearchingWeightsRepository, SearchingWeightsRepository>();
 
         return services;
     }

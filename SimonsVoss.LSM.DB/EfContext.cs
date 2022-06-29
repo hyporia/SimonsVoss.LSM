@@ -21,6 +21,7 @@ public class EfContext : DbContext
     public DbSet<Medium> Media { get; set; }
     public DbSet<LockType> LockTypes { get; set; }
     public DbSet<MediumType> MediumTypes { get; set; }
+    public DbSet<SearchingWeight> SearchingWeights { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -34,15 +35,17 @@ public class EfContext : DbContext
             out var buildings,
             out var locks,
             out var groups,
-            out var media
+            out var media,
+            out var searchingWeights
         );
-        
+
         modelBuilder.Entity<MediumType>().HasData(mediumTypes);
         modelBuilder.Entity<LockType>().HasData(lockTypes);
         modelBuilder.Entity<Building>().HasData(buildings);
         modelBuilder.Entity<Lock>().HasData(locks);
         modelBuilder.Entity<Group>().HasData(groups);
         modelBuilder.Entity<Medium>().HasData(media);
+        modelBuilder.Entity<SearchingWeight>().HasData(searchingWeights);
     }
 
     private static void GetDataToSeed(
@@ -51,7 +54,8 @@ public class EfContext : DbContext
         out List<Building> buildings,
         out List<Lock> locks,
         out List<Group> groups,
-        out List<Medium> media)
+        out List<Medium> media,
+        out List<SearchingWeight> searchingWeights)
     {
         var assembly = Assembly.GetExecutingAssembly();
         using var manifestStream = assembly.GetManifestResourceStream("SimonsVoss.LSM.DB.sv_lsm_data.json")!;
@@ -68,5 +72,28 @@ public class EfContext : DbContext
         locks = jsonDoc.RootElement.GetProperty("locks").Deserialize<List<Lock>>(options)!;
         groups = jsonDoc.RootElement.GetProperty("groups").Deserialize<List<Group>>(options)!;
         media = jsonDoc.RootElement.GetProperty("media").Deserialize<List<Medium>>(options)!;
+
+        var i = 1;
+        searchingWeights = new List<SearchingWeight>
+        {
+            new SearchingWeight(i++, nameof(Lock), nameof(Lock.Name), 10),
+            new SearchingWeight(i++, nameof(Lock), nameof(Lock.LockType), 3),
+            new SearchingWeight(i++, nameof(Lock), nameof(Lock.SerialNumber), 8),
+            new SearchingWeight(i++, nameof(Lock), nameof(Lock.Floor), 6),
+            new SearchingWeight(i++, nameof(Lock), nameof(Lock.RoomNumber), 6),
+            new SearchingWeight(i++, nameof(Lock), nameof(Lock.Description), 6),
+            new SearchingWeight(i++, nameof(Lock), nameof(Building.Name), 8, nameof(Building)),
+            new SearchingWeight(i++, nameof(Lock), nameof(Building.ShortCut), 5, nameof(Building)),
+            new SearchingWeight(i++, nameof(Medium), nameof(Medium.MediumType), 3),
+            new SearchingWeight(i++, nameof(Medium), nameof(Medium.Owner), 10),
+            new SearchingWeight(i++, nameof(Medium), nameof(Medium.SerialNumber), 8),
+            new SearchingWeight(i++, nameof(Medium), nameof(Medium.Description), 6),
+            new SearchingWeight(i++, nameof(Medium), nameof(Group.Name), 8, nameof(Group)),
+            new SearchingWeight(i++, nameof(Building), nameof(Building.Name), 9),
+            new SearchingWeight(i++, nameof(Building), nameof(Building.ShortCut), 7),
+            new SearchingWeight(i++, nameof(Building), nameof(Building.Description), 5),
+            new SearchingWeight(i++, nameof(Group), nameof(Group.Name), 9),
+            new SearchingWeight(i++, nameof(Group), nameof(Group.Description), 5),
+        };
     }
 }

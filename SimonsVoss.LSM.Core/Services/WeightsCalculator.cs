@@ -1,29 +1,65 @@
 using SimonsVoss.LSM.Core.Abstractions;
 using SimonsVoss.LSM.Core.DTO.Lock;
+using SimonsVoss.LSM.Core.Entities;
+using SimonsVoss.LSM.Core.Requests.GetSearchingWeights;
 
 namespace SimonsVoss.LSM.Core.Services;
 
 public class WeightsCalculator : IWeightsCalculator
 {
-    public List<WeightedLock> GetWeightedLocks(List<FilteredLock> filteredLocks)
+    private readonly ISearchingWeightsRepository _searchingWeightsRepository;
+    
+
+    public WeightsCalculator(ISearchingWeightsRepository searchingWeightsRepository)
     {
+        _searchingWeightsRepository = searchingWeightsRepository;
+    }
+
+    public async Task<List<WeightedLock>> GetWeightedLocksAsync(List<FilteredLock> filteredLocks,
+        CancellationToken cancellationToken)
+    {
+        var weights = await _searchingWeightsRepository.GetAsync(new GetSearchingWeightsQuery
+        {
+            EntityName = nameof(Lock)
+        }, cancellationToken);
+
+        var nameWeight = weights.FirstOrDefault(x => x.PropertyName == nameof(Lock.Name));
+        var descriptionWeight = weights.FirstOrDefault(x => x.PropertyName == nameof(Lock.Description));
+        var typeWeight = weights.FirstOrDefault(x => x.PropertyName == nameof(Lock.LockType));
+        var serialNumberWeight = weights.FirstOrDefault(x => x.PropertyName == nameof(Lock.SerialNumber));
+        var floorWeight = weights.FirstOrDefault(x => x.PropertyName == nameof(Lock.Floor));
+        var roomNumberWeight = weights.FirstOrDefault(x => x.PropertyName == nameof(Lock.RoomNumber));
+        var buildingNameWeight = weights.FirstOrDefault(x =>
+            x.PropertyName == nameof(Building.Name) && x.TransitiveEntityName == nameof(Building));
+        var buildingNShortCutWeight = weights.FirstOrDefault(x =>
+            x.PropertyName == nameof(Building.ShortCut) && x.TransitiveEntityName == nameof(Building));
+
         var weightedLocks = filteredLocks
             .Select(x => new WeightedLock
             {
-                //TODO: move "magic numbers" to the weights table
-                Weight = (x.DoesNameMatches ? 100 : x.DoesNameContains ? 10 : 0) +
-                         (x.DoesDescriptionMatches ? 60 : x.DoesDescriptionContains ? 6 : 0) +
-                         (x.DoesTypeContains ? 30 : x.DoesTypeMatches ? 3 : 0) +
-                         (x.DoesSerialNumberMatches ? 80 : x.DoesSerialNumberContains ? 8 : 0) +
-                         (x.DoesFloorMatches ? 60 : x.DoesFloorContains ? 6 : 0) +
-                         (x.DoesRoomNumberMatches ? 60 : x.DoesRoomNumberContains ? 6 : 0) +
-                         (x.DoesBuildingNameMatches ? 80 : x.DoesBuildingNameContains ? 8 : 0) +
-                         (x.DoesBuildingShortCutMatches ? 50 : x.DoesBuildingShortCutContains ? 5 : 0),
+                Weight = CalculateSinglePropertyWeight(x.DoesNameMatches, x.DoesNameContains, nameWeight) +
+                         CalculateSinglePropertyWeight(x.DoesDescriptionMatches, x.DoesDescriptionContains, descriptionWeight) +
+                         CalculateSinglePropertyWeight(x.DoesTypeMatches, x.DoesTypeContains, typeWeight) +
+                         CalculateSinglePropertyWeight(x.DoesSerialNumberMatches, x.DoesSerialNumberContains, serialNumberWeight) +
+                         CalculateSinglePropertyWeight(x.DoesFloorMatches, x.DoesFloorContains, floorWeight) +
+                         CalculateSinglePropertyWeight(x.DoesRoomNumberMatches, x.DoesRoomNumberContains, roomNumberWeight) +
+                         CalculateSinglePropertyWeight(x.DoesBuildingNameMatches, x.DoesBuildingNameContains, buildingNameWeight) +
+                         CalculateSinglePropertyWeight(x.DoesBuildingShortCutMatches, x.DoesBuildingShortCutContains, buildingNShortCutWeight),
                 Lock = x.Lock
             })
-            .OrderBy(x => x.Weight)
             .ToList();
 
         return weightedLocks;
+    }
+
+    private int CalculateSinglePropertyWeight(bool doesPropertyFullyMatch, bool doesPropertyContains, SearchingWeight searchingWeight)
+    {
+        if (searchingWeight == null) throw new ArgumentNullException(nameof(searchingWeight));
+
+        return doesPropertyFullyMatch
+            ? searchingWeight.Weight * searchingWeight.FullMatchMultiplier
+            : doesPropertyContains
+                ? searchingWeight.Weight
+                : 0;
     }
 }

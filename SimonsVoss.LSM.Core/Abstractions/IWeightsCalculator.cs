@@ -4,5 +4,6 @@ namespace SimonsVoss.LSM.Core.Abstractions;
 
 public interface IWeightsCalculator
 {
-    public List<WeightedLock> GetWeightedLocks(List<FilteredLock> filteredLocks);
+    public Task<List<WeightedLock>> GetWeightedLocksAsync(List<FilteredLock> filteredLocks,
+        CancellationToken cancellationToken);
 }
