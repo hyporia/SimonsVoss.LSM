@@ -22,7 +22,7 @@ public class GetLocksQueryHandler : IRequestHandler<GetLocksQuery, GetLocksQuery
         var filteredLocks = await _lockRepository.GetAsync(request.Term, cancellationToken);
         var weightedLocks = await _weightsCalculator.GetWeightedLocksAsync(filteredLocks, cancellationToken);
         var locks = weightedLocks
-            .OrderBy(x => x.Weight)
+            .OrderByDescending(x => x.Weight)
             .Select(x => _mapper.Map<GetLocksQueryResponseItem>(x.Lock))
             .ToList();
 

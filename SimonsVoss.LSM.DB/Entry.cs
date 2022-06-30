@@ -37,6 +37,9 @@ public static class Entry
         
         services.AddTransient<ILockRepository, LockRepository>();
         services.AddTransient<ISearchingWeightsRepository, SearchingWeightsRepository>();
+        services.AddTransient<IMediumRepository, MediumRepository>();
+        services.AddTransient<IBuildingRepository, BuildingRepository>();
+        services.AddTransient<IGroupRepository, GroupRepository>();
 
         return services;
     }

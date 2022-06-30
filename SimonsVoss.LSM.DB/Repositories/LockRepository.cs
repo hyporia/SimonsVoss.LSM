@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using SimonsVoss.LSM.Core.Abstractions;
 using SimonsVoss.LSM.Core.DTO.Lock;
@@ -18,6 +19,7 @@ public class LockRepository : ILockRepository
     {
         if (string.IsNullOrEmpty(term)) throw new ArgumentNullException(nameof(term));
 
+        term = term.ToLower(CultureInfo.InvariantCulture);
         var patternTerm = $"%{term}%";
 
         var lockTypes = await _context.LockTypes
