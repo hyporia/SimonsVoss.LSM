@@ -7,10 +7,11 @@
 
         <IsPackable>false</IsPackable>
 
-        <RootNamespace>TestProject1</RootNamespace>
+        <RootNamespace>SimonsVoss.LSM.UnitTest</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="11.0.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
         <PackageReference Include="xunit" Version="2.4.1" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
@@ -21,6 +22,11 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\SimonsVoss.LSM.Core\SimonsVoss.LSM.Core.csproj" />
+      <ProjectReference Include="..\..\src\SimonsVoss.LSM.DB\SimonsVoss.LSM.DB.csproj" />
     </ItemGroup>
 
 </Project>

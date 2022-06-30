@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace SimonsVoss.LSM.Core.Requests.GetMedia;
 
 public class GetMediaQueryResponseItem

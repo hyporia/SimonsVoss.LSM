@@ -1,8 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SimonsVoss.LSM.Core.Requests.GetGroups;
-using SimonsVoss.LSM.Core.Requests.GetMedia;
-using SimonsVoss.LSM.DB;
 
 namespace SimonsVoss.LSM.Web.Controllers;
 
