@@ -3,6 +3,7 @@ using SimonsVoss.LSM.Core.Abstractions;
 using SimonsVoss.LSM.Core.DTO.Medium;
 using SimonsVoss.LSM.Core.Entities;
 using SimonsVoss.LSM.Core.Extensions;
+using System.Globalization;
 
 namespace SimonsVoss.LSM.DB.Repositories;
 
@@ -21,7 +22,7 @@ public class MediumRepository : IMediumRepository
     {
         if (string.IsNullOrEmpty(term)) throw new ArgumentNullException(nameof(term));
 
-        term = term.ToLower();
+        term = term.ToLower(CultureInfo.InvariantCulture);
         var patternTerm = $"%{term}%";
 
         var mediumTypes = await _context.MediumTypes

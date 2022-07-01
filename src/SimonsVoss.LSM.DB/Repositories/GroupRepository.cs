@@ -1,9 +1,9 @@
-using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using SimonsVoss.LSM.Core.Abstractions;
 using SimonsVoss.LSM.Core.DTO.Group;
 using SimonsVoss.LSM.Core.Entities;
 using SimonsVoss.LSM.Core.Extensions;
+using System.Globalization;
 
 namespace SimonsVoss.LSM.DB.Repositories;
 
@@ -29,12 +29,12 @@ public class GroupRepository : IGroupRepository
             .AsNoTracking()
             .Select(x => new
             {
-                DoesNameContains = !string.IsNullOrEmpty(x.Name) && EF.Functions.Like(x.Name.ToLower(CultureInfo.InvariantCulture), patternTerm),
-                DoesNameMatches = !string.IsNullOrEmpty(x.Name) && EF.Functions.Like(x.Name.ToLower(CultureInfo.InvariantCulture), term),
+                DoesNameContains = !string.IsNullOrEmpty(x.Name) && EF.Functions.Like(x.Name.ToLower(), patternTerm),
+                DoesNameMatches = !string.IsNullOrEmpty(x.Name) && EF.Functions.Like(x.Name.ToLower(), term),
                 DoesDescriptionContains = !string.IsNullOrEmpty(x.Description) &&
-                                          EF.Functions.Like(x.Description.ToLower(CultureInfo.InvariantCulture), patternTerm),
+                                          EF.Functions.Like(x.Description.ToLower(), patternTerm),
                 DoesDescriptionMatches = !string.IsNullOrEmpty(x.Description) &&
-                                         EF.Functions.Like(x.Description.ToLower(CultureInfo.InvariantCulture), term),
+                                         EF.Functions.Like(x.Description.ToLower(), term),
                 Group = x
             })
             .Where(x => x.DoesDescriptionContains || x.DoesNameContains)
