@@ -73,5 +73,7 @@ public class MediumRepository : IMediumRepository
     public async Task<List<Medium>> GetAsync(CancellationToken cancellationToken) =>
         await _context.Media
             .AsNoTracking()
+            .Include(x => x.MediumType)
+            .Include(x => x.Group)
             .ToListAsync(cancellationToken);
 }
