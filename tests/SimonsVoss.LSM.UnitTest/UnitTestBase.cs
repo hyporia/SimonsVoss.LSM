@@ -2,7 +2,6 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using SimonsVoss.LSM.Core.AutoMapper;
 using SimonsVoss.LSM.DB;
-using Xunit.Abstractions;
 
 namespace SimonsVoss.LSM.UnitTest
 {

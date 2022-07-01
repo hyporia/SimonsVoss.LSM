@@ -2,10 +2,12 @@ using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using SimonsVoss.LSM.Core.Abstractions;
 using SimonsVoss.LSM.Core.DTO.Lock;
+using SimonsVoss.LSM.Core.Entities;
 using SimonsVoss.LSM.Core.Extensions;
 
 namespace SimonsVoss.LSM.DB.Repositories;
 
+/// <inheritdoc/>
 public class LockRepository : ILockRepository
 {
     private readonly EfContext _context;
@@ -15,6 +17,7 @@ public class LockRepository : ILockRepository
         _context = context;
     }
 
+    /// <inheritdoc/>
     public async Task<List<FilteredLock>> GetAsync(string term, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(term)) throw new ArgumentNullException(nameof(term));
@@ -76,4 +79,10 @@ public class LockRepository : ILockRepository
             .Select(x => x.ToType<FilteredLock>())
             .ToList();
     }
+    
+    /// <inheritdoc/>
+    public async Task<List<Lock>> GetAsync(CancellationToken cancellationToken) =>
+        await _context.Locks
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
 }

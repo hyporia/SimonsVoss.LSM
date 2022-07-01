@@ -7,6 +7,12 @@ namespace SimonsVoss.LSM.DB;
 
 public static class Entry
 {
+    /// <summary>
+    /// Add PostgreSQL DB to the project
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="optionsAction"></param>
+    /// <returns></returns>
     public static IServiceCollection AddPostgreSql(
         this IServiceCollection services,
         Action<PostgresDbOptions>? optionsAction)
@@ -17,6 +23,14 @@ public static class Entry
         return services.AddPostgreSql(options);
     }
 
+    /// <summary>
+    /// Add PostgreSQL DB to the project
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="options"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
     public static IServiceCollection AddPostgreSql(
         this IServiceCollection services,
         PostgresDbOptions options)

@@ -5,6 +5,7 @@ using SimonsVoss.LSM.Core.Requests.GetSearchingWeights;
 
 namespace SimonsVoss.LSM.DB.Repositories;
 
+/// <inheritdoc/>
 public class SearchingWeightsRepository : ISearchingWeightsRepository
 {
     private readonly EfContext _context;
@@ -13,7 +14,8 @@ public class SearchingWeightsRepository : ISearchingWeightsRepository
     {
         _context = context;
     }
-
+    
+    /// <inheritdoc/>
     public async Task<List<SearchingWeight>> GetAsync(GetSearchingWeightsQuery request, CancellationToken cancellationToken) =>
         await _context.SearchingWeights
             .AsNoTracking()

@@ -1,5 +1,10 @@
+using SimonsVoss.LSM.Core.Entities;
+
 namespace SimonsVoss.LSM.Core.Requests.GetMedia;
 
+/// <summary>
+/// <see cref="Medium"/> model for <see cref="GetMediaQueryResponse"/>
+/// </summary>
 public class GetMediaQueryResponseItem
 {
     public Guid Id { get; set; }

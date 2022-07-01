@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using SimonsVoss.LSM.Core.Abstractions;
 using SimonsVoss.LSM.Core.DTO.Medium;
+using SimonsVoss.LSM.Core.Entities;
 using SimonsVoss.LSM.Core.Extensions;
 
 namespace SimonsVoss.LSM.DB.Repositories;
 
+/// <inheritdoc/>
 public class MediumRepository : IMediumRepository
 {
     private readonly EfContext _context;
@@ -14,6 +16,7 @@ public class MediumRepository : IMediumRepository
         _context = context;
     }
 
+    /// <inheritdoc/>
     public async Task<List<FilteredMedium>> GetAsync(string term, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(term)) throw new ArgumentNullException(nameof(term));
@@ -51,17 +54,24 @@ public class MediumRepository : IMediumRepository
                 DoesOwnerContains = !string.IsNullOrEmpty(x.Owner) && EF.Functions.Like(x.Owner.ToLower(), patternTerm),
                 DoesOwnerMatches = !string.IsNullOrEmpty(x.Owner) && EF.Functions.Like(x.Owner.ToLower(), term),
                 DoesGroupNameContains = !string.IsNullOrEmpty(x.Group.Name) &&
-                                               EF.Functions.Like(x.Group.Name.ToLower(), patternTerm),
+                                        EF.Functions.Like(x.Group.Name.ToLower(), patternTerm),
                 DoesGroupNameMatches = !string.IsNullOrEmpty(x.Group.Name) &&
-                                              EF.Functions.Like(x.Group.Name.ToLower(), term),
+                                       EF.Functions.Like(x.Group.Name.ToLower(), term),
                 Medium = x
             })
-            .Where(x => x.DoesDescriptionContains ||  x.DoesTypeContains
-                        || x.DoesSerialNumberContains || x.DoesOwnerContains || x.DoesGroupNameContains)
+            .Where(x => x.DoesDescriptionContains || x.DoesTypeContains
+                                                  || x.DoesSerialNumberContains || x.DoesOwnerContains ||
+                                                  x.DoesGroupNameContains)
             .ToListAsync(cancellationToken);
 
         return filteredMedia
             .Select(x => x.ToType<FilteredMedium>())
             .ToList();
     }
+
+    /// <inheritdoc/>
+    public async Task<List<Medium>> GetAsync(CancellationToken cancellationToken) =>
+        await _context.Media
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
 }

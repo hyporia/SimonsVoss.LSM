@@ -1,5 +1,3 @@
-using Xunit.Abstractions;
-
 namespace SimonsVoss.LSM.UnitTest
 {
 	/// <summary>

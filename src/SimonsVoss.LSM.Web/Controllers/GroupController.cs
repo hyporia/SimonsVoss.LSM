@@ -17,6 +17,11 @@ public class GroupController : ControllerBase
         _mediator = mediator;
     }
 
+    /// <summary>
+    /// Get groups by search term
+    /// </summary>
+    /// <param name="query"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<GetGroupsQueryResponse> GetAsync([FromQuery] GetGroupsQuery query)
     {

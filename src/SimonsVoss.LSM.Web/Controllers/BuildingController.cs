@@ -17,6 +17,11 @@ public class BuildingController : ControllerBase
         _mediator = mediator;
     }
 
+    /// <summary>
+    /// Get buildings by search term
+    /// </summary>
+    /// <param name="query"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<GetBuildingsQueryResponse> GetAsync([FromQuery] GetBuildingsQuery query)
     {

@@ -2,10 +2,12 @@ using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using SimonsVoss.LSM.Core.Abstractions;
 using SimonsVoss.LSM.Core.DTO.Group;
+using SimonsVoss.LSM.Core.Entities;
 using SimonsVoss.LSM.Core.Extensions;
 
 namespace SimonsVoss.LSM.DB.Repositories;
 
+/// <inheritdoc/>
 public class GroupRepository : IGroupRepository
 {
     private readonly EfContext _context;
@@ -15,6 +17,7 @@ public class GroupRepository : IGroupRepository
         _context = context;
     }
 
+    /// <inheritdoc/>
     public async Task<List<FilteredGroup>> GetAsync(string term, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(term)) throw new ArgumentNullException(nameof(term));
@@ -41,4 +44,10 @@ public class GroupRepository : IGroupRepository
             .Select(x => x.ToType<FilteredGroup>())
             .ToList();
     }
+
+    /// <inheritdoc/>
+    public async Task<List<Group>> GetAsync(CancellationToken cancellationToken) =>
+        await _context.Groups
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
 }

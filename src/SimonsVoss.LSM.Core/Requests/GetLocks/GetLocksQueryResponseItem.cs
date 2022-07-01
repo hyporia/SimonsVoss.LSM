@@ -1,5 +1,10 @@
+using SimonsVoss.LSM.Core.Entities;
+
 namespace SimonsVoss.LSM.Core.Requests.GetLocks;
 
+/// <summary>
+/// <see cref="Lock"/> model for <see cref="GetLocksQueryResponse"/>
+/// </summary>
 public class GetLocksQueryResponseItem
 {
     public Guid Id { get; set; }

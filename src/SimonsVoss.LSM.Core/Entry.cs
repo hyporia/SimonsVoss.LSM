@@ -8,6 +8,11 @@ namespace SimonsVoss.LSM.Core;
 
 public static class Entry
 {
+    /// <summary>
+    /// Add Core modules
+    /// </summary>
+    /// <param name="services"></param>
+    /// <returns></returns>
     public static IServiceCollection AddCore(
         this IServiceCollection services)
     {

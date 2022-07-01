@@ -8,6 +8,7 @@ using SimonsVoss.LSM.Core.Requests.GetSearchingWeights;
 
 namespace SimonsVoss.LSM.Core.Services;
 
+/// <inheritdoc/>
 public class WeightsCalculator : IWeightsCalculator
 {
     private readonly ISearchingWeightsRepository _searchingWeightsRepository;
@@ -17,6 +18,7 @@ public class WeightsCalculator : IWeightsCalculator
         _searchingWeightsRepository = searchingWeightsRepository;
     }
 
+    /// <inheritdoc/>
     public async Task<List<WeightedLock>> GetWeightedLocksAsync(List<FilteredLock> filteredLocks,
         CancellationToken cancellationToken)
     {
@@ -59,6 +61,7 @@ public class WeightsCalculator : IWeightsCalculator
         return weightedLocks;
     }
 
+    /// <inheritdoc/>
     public async Task<List<WeightedBuilding>> GetWeightedBuildingsAsync(List<FilteredBuilding> filteredBuildings,
         CancellationToken cancellationToken)
     {
@@ -85,6 +88,7 @@ public class WeightsCalculator : IWeightsCalculator
         return weightedBuildings;
     }
 
+    /// <inheritdoc/>
     public async Task<List<WeightedGroup>> GetWeightedGroupsAsync(List<FilteredGroup> filteredGroups,
         CancellationToken cancellationToken)
     {
@@ -109,6 +113,7 @@ public class WeightsCalculator : IWeightsCalculator
         return weightedGroups;
     }
 
+    /// <inheritdoc/>
     public async Task<List<WeightedMedium>> GetWeightedMediaAsync(List<FilteredMedium> filteredMedia,
         CancellationToken cancellationToken)
     {

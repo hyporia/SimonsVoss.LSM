@@ -17,6 +17,11 @@ public class LockController : ControllerBase
         _mediator = mediator;
     }
 
+    /// <summary>
+    /// Get locks by search term
+    /// </summary>
+    /// <param name="query"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<GetLocksQueryResponse> GetAsync([FromQuery] GetLocksQuery query)
     {

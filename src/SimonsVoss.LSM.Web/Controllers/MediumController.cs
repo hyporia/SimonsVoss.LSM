@@ -17,6 +17,11 @@ public class MediumController : ControllerBase
         _mediator = mediator;
     }
 
+    /// <summary>
+    /// Get media by search term
+    /// </summary>
+    /// <param name="query"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<GetMediaQueryResponse> GetAsync([FromQuery] GetMediaQuery query)
     {

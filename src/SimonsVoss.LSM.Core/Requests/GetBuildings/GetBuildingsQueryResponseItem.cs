@@ -1,5 +1,10 @@
+using SimonsVoss.LSM.Core.Entities;
+
 namespace SimonsVoss.LSM.Core.Requests.GetBuildings;
 
+/// <summary>
+/// <see cref="Building"/> model for <see cref="GetBuildingsQueryResponse"/>
+/// </summary>
 public class GetBuildingsQueryResponseItem
 {
     public Guid Id { get; set; }

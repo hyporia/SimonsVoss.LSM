@@ -2,10 +2,12 @@ using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using SimonsVoss.LSM.Core.Abstractions;
 using SimonsVoss.LSM.Core.DTO.Building;
+using SimonsVoss.LSM.Core.Entities;
 using SimonsVoss.LSM.Core.Extensions;
 
 namespace SimonsVoss.LSM.DB.Repositories;
 
+/// <inheritdoc/>
 public class BuildingRepository : IBuildingRepository
 {
     private readonly EfContext _context;
@@ -15,6 +17,7 @@ public class BuildingRepository : IBuildingRepository
         _context = context;
     }
 
+    /// <inheritdoc/>
     public async Task<List<FilteredBuilding>> GetAsync(string term, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(term)) throw new ArgumentNullException(nameof(term));
@@ -47,4 +50,10 @@ public class BuildingRepository : IBuildingRepository
             .Select(x => x.ToType<FilteredBuilding>())
             .ToList();
     }
+
+    /// <inheritdoc/>
+    public async Task<List<Building>> GetAsync(CancellationToken cancellationToken) =>
+        await _context.Buildings
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
 }
